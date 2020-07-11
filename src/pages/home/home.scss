@@ -1,0 +1,33 @@
+@import "~taro-ui/dist/style/components/flex.scss";
+.home{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    .home-container{
+        margin: 340px auto;
+        display: flex;
+        flex-direction: column;
+        transform: scale(1.5);
+        .icon-wrap{
+            width: 100px;
+            height: 100px;
+            align-items: center;
+            align-self:center;
+            transform: scale(2);
+        }
+        .select-wrap{
+            margin-top: 100px;
+            .select-button{
+                border-radius: 6px;
+            }
+            margin-bottom: 30px;
+        }
+        .create-wrap{
+            .create-button{
+                border-radius: 6px;
+            }
+        }
+        
+        
+    }
+}
