@@ -1,6 +1,6 @@
-import Nerv, { Component, useState } from "nervjs";
-import { View, Button } from "@tarojs/components";
-import { AtButton, AtIcon, AtAvatar } from "taro-ui"
+import Nerv, { useState } from "nervjs";
+import { View } from "@tarojs/components";
+import { AtButton, AtAvatar } from "taro-ui"
 import "./home.scss"
 
 
