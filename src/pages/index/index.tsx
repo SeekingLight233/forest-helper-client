@@ -1,6 +1,6 @@
 import Nerv, { Component } from "nervjs";
 import { connect } from "nerv-redux";
-import { View, Button, Text } from "@tarojs/components";
+import { View, Button } from "@tarojs/components";
 
 import { add, minus, asyncAdd } from "../../actions/counter";
 
