@@ -1,6 +1,7 @@
 export default {
   pages: [
     // 'pages/index/index',
+    "pages/create/create",
     'pages/home/home'
   ],
   window: {
