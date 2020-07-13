@@ -1,25 +1,38 @@
 /* eslint-disable no-shadow */
-import Nerv, { useState } from "nervjs";
+import Nerv, { useState, useMemo, useShareAppMessage } from "nervjs";
 import { View, Picker, Text } from "@tarojs/components";
 import { AtButton, AtInput, AtList, AtListItem } from "taro-ui";
 import { DURATIONS } from "../../constants/common"
-import { TREES } from "../../constants/tree_data"
+import { TREES } from "../../constants/treeData"
 import "./create.scss";
 import { getDate, getTime } from "../../utils/utils";
 
-const trees = TREES.map(item => item.NAME)
+// eslint-disable-next-line import/first
+import { connect, ConnectedProps } from "nerv-redux";
+import { USER_INFO } from "../../constants/actionTypes";
 
-const Create: React.FC = () => {
+const mapStateToProps = (state) => ({
+  openid: state.counter.openid,
+})
+
+const connector = connect(mapStateToProps);
+
+type ModelState = ConnectedProps<typeof connector>
+
+const Create: React.FC<ModelState> = (props) => {
+  const { openid, dispatch } = props
 
   const [date, setDate] = useState(getDate())
   const [time, setTime] = useState(getTime())
   const [durationCheck, setDurationCheck] = useState("30分钟")
   const [treeCheck, setTreeCheck] = useState("默认树种")
   const [commit, setCommit] = useState("")
+  const [treeIndex, setTreeIndex] = useState(0)
+
+  const trees = useMemo(() => TREES.map(item => item.NAME), [])
 
   const onDateChange = (e) => {
     setDate(e.detail.value)
-
   }
   const onTimeChange = (e) => {
     setTime(e.detail.value)
@@ -28,17 +41,35 @@ const Create: React.FC = () => {
     setDurationCheck(DURATIONS[e.detail.value])
   }
   const onTreesChange = (e) => {
+    setTreeIndex(e.detail.value)
     setTreeCheck(trees[e.detail.value])
   }
   const onCommitChange = (val) => {
     setCommit(val)
   }
 
+  const submit = () => {
+    console.log(date);
+    console.log(time);
+    console.log(durationCheck)
+    console.log(treeIndex)
+    console.log(commit)
+    console.log(openid)
+  }
+
+  const reset = () => {
+    setDate(getDate());
+    setTime(getTime())
+    setDurationCheck("30分钟");
+    setTreeCheck("默认树种");
+    setCommit("")
+  }
+
   return (
     <View className='create' style='flex-direction:column'>
       <View className='content-wrap' style='flex-direction:column'>
         <View className='title'>
-          <View className='icon'></View><Text>房间信息</Text>
+          <View className='icon'></View><Text className='title-text'>房间信息</Text>
         </View>
 
         <View className='picker'>
@@ -75,8 +106,8 @@ const Create: React.FC = () => {
         </View>
 
         <View className='buttons'>
-          <AtButton type='primary' className='submit-btn'>发布</AtButton>
-          <AtButton className='reset-btn'>重置</AtButton>
+          <AtButton type='primary' className='submit-btn' onClick={submit}>发布房间信息</AtButton>
+          <AtButton className='reset-btn' onClick={reset}>重置</AtButton>
         </View>
       </View>
 
@@ -84,4 +115,4 @@ const Create: React.FC = () => {
   );
 };
 
-export default Create;
+export default connect(mapStateToProps)(Create);

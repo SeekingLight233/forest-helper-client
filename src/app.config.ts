@@ -1,14 +1,13 @@
 export default {
   pages: [
-    // 'pages/index/index',
+    'pages/home/home',
     "pages/create/create",
-    'pages/home/home'
   ],
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
+    navigationBarBackgroundColor: '#18191a',
     navigationBarTitleText: 'Forest开车助手',
-    navigationBarTextStyle: 'black',
-    backgroundColor: "#eff3f6",
+    navigationBarTextStyle: 'white',
+    backgroundColor: "#18191a",
   }
 }

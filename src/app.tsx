@@ -8,7 +8,11 @@ import './app.scss'
 const store = configStore()
 
 class App extends Component {
-  componentDidMount() { }
+  componentDidMount() {
+    wx.cloud.init({
+      traceUser: true,
+    })
+  }
 
   componentDidShow() { }
 

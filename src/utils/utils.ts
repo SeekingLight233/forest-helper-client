@@ -7,7 +7,6 @@ const getLateTime = () => {
 
 export const getDate = () => {
     const date = getLateTime()
-    console.log(date.toLocaleDateString().replace(/\//g, "-"))
     return date.toLocaleDateString().replace(/\//g, "-")
 }
 
