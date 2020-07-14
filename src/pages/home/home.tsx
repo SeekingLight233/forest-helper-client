@@ -5,10 +5,11 @@ import { AtButton, AtAvatar } from "taro-ui"
 import "./home.scss"
 // eslint-disable-next-line import/first
 import { connect, ConnectedProps } from "nerv-redux";
-import { USER_INFO } from "../../constants/actionTypes";
+import { saveUserInfo } from "../../utils/utils";
 
 const mapStateToProps = (state) => ({
     openid: state.counter.openid,
+    nickName: state.counter.nickName
 })
 
 const connector = connect(mapStateToProps);
@@ -19,43 +20,14 @@ type ModelState = ConnectedProps<typeof connector>
 
 const Home: React.FC<ModelState> = (props) => {
 
-    const { openid, dispatch } = props
+    const { openid, nickName, dispatch } = props
     const storageOpenid = Taro.getStorageSync("openid");
+    const storageNickName = Taro.getStorageSync("nickName")
 
-    /**
-     * @description get user info
-     */
-    useEffect(() => {
-        if (storageOpenid) {
-            console.log(storageOpenid);
-            dispatch({
-                type: USER_INFO,
-                openid: storageOpenid
-            })
-        } else {
-            wx.cloud.callFunction({
-                name: 'login',
-                data: {},
-                success: res => {
-                    dispatch({
-                        type: USER_INFO,
-                        openid: res.result.openid
-                    })
-                    Taro.setStorageSync("openid", res.result.openid)
-                },
-                fail: err => {
-                    console.error(err)
-                }
-            })
-        }
 
-    }, [dispatch, openid, storageOpenid])
-
-    /**
-     * @description navigate to new page
-     */
-    const createHome = () => {
-        Taro.navigateTo({ url: '../create/create' })
+    const handleUserInfo = (e) => {
+        saveUserInfo({ e, storageOpenid, storageNickName, dispatch })
+        Taro.navigateTo({ url: "../create/create" })
     }
     return (
         <View className='home'>
@@ -67,7 +39,7 @@ const Home: React.FC<ModelState> = (props) => {
                     <AtButton className='select-button' type='primary' size='small' circle >选择房间</AtButton>
                 </View>
                 <View className='create-wrap'>
-                    <AtButton className='create-button' type='primary' size='small' circle onClick={createHome}>创建预定房间</AtButton>
+                    <AtButton className='create-button' onGetUserInfo={handleUserInfo} openType='getUserInfo' type='primary' size='small' circle>创建预定房间</AtButton>
                 </View>
             </View>
         </View>

@@ -1,11 +1,11 @@
 /* eslint-disable no-shadow */
-import Nerv, { useState, useMemo, useShareAppMessage } from "nervjs";
-import { View, Picker, Text } from "@tarojs/components";
+import Nerv, { useState, useMemo, useShareAppMessage, useRef } from "nervjs";
+import Taro, { View, Picker, Text, OpenData } from "@tarojs/components";
 import { AtButton, AtInput, AtList, AtListItem } from "taro-ui";
 import { DURATIONS, WAIT_DURATIONS } from "../../constants/common"
 import { TREES } from "../../constants/treeData"
 import "./create.scss";
-import { getDate, getTime } from "../../utils/utils";
+import { getDate, getTime, getLateTime, resolveTime } from "../../utils/utils";
 
 // eslint-disable-next-line import/first
 import { connect, ConnectedProps } from "nerv-redux";
@@ -13,6 +13,7 @@ import { USER_INFO } from "../../constants/actionTypes";
 
 const mapStateToProps = (state) => ({
   openid: state.counter.openid,
+  nickName: state.counter.nickName
 })
 
 const connector = connect(mapStateToProps);
@@ -20,7 +21,7 @@ const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>
 
 const Create: React.FC<ModelState> = (props) => {
-  const { openid, dispatch } = props
+  const { openid, nickName, dispatch } = props
 
   const [date, setDate] = useState(getDate())
   const [time, setTime] = useState(getTime())
@@ -53,13 +54,31 @@ const Create: React.FC<ModelState> = (props) => {
   }
 
   const submit = () => {
-    console.log(date);
-    console.log(time);
-    console.log(durationCheck)
-    console.log(treeIndex)
-    console.log(commit)
-    console.log(openid)
-    console.log(WAIT_DURATIONS)
+
+    const db = wx.cloud.database();
+    db.collection('rooms').add({
+      data: {
+        startTime: resolveTime(date, time),
+        duration: durationCheck,
+        treeImg: TREES[treeIndex].URL,
+        commit: commit,
+        openid: openid,
+        nickName: nickName,
+        menbers: []
+      },
+      success: res => {
+        wx.showToast({
+          title: '信息发布成功',
+        })
+      },
+    })
+    // console.log(date);
+    // console.log(time);
+    // console.log(durationCheck)
+    // console.log(treeIndex)
+    // console.log(commit)
+    // console.log(openid)
+    // console.log(nickName)
   }
 
   const reset = () => {

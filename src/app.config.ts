@@ -1,9 +1,8 @@
 export default {
   pages: [
-
-    "pages/share/share",
     'pages/home/home',
     "pages/create/create",
+    "pages/share/share",
   ],
   window: {
     backgroundTextStyle: 'dark',

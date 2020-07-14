@@ -1,11 +1,13 @@
 import { ADD, MINUS, USER_INFO } from '../constants/actionTypes'
 
 export interface UserState {
-  openid: string
+  openid: string,
+  nickName: string
 }
 
 const INITIAL_STATE: UserState = {
-  openid: "abcdefg"
+  openid: "openid",
+  nickName: "nickName"
 }
 
 export default function counter(state = INITIAL_STATE, action) {
@@ -13,7 +15,8 @@ export default function counter(state = INITIAL_STATE, action) {
     case USER_INFO:
       return {
         ...state,
-        openid: action.openid
+        openid: action.openid,
+        nickName: action.nickName
       }
     default:
       return state
