@@ -2,7 +2,7 @@
 import Nerv, { useState, useMemo, useShareAppMessage } from "nervjs";
 import { View, Picker, Text } from "@tarojs/components";
 import { AtButton, AtInput, AtList, AtListItem } from "taro-ui";
-import { DURATIONS } from "../../constants/common"
+import { DURATIONS, WAIT_DURATIONS } from "../../constants/common"
 import { TREES } from "../../constants/treeData"
 import "./create.scss";
 import { getDate, getTime } from "../../utils/utils";
@@ -25,6 +25,7 @@ const Create: React.FC<ModelState> = (props) => {
   const [date, setDate] = useState(getDate())
   const [time, setTime] = useState(getTime())
   const [durationCheck, setDurationCheck] = useState("30分钟")
+  const [waitDuration, setWaitDuration] = useState("5分钟")
   const [treeCheck, setTreeCheck] = useState("默认树种")
   const [commit, setCommit] = useState("")
   const [treeIndex, setTreeIndex] = useState(0)
@@ -39,6 +40,9 @@ const Create: React.FC<ModelState> = (props) => {
   }
   const onDurationChange = (e) => {
     setDurationCheck(DURATIONS[e.detail.value])
+  }
+  const onWaitDurationChange = (e) => {
+    setWaitDuration(WAIT_DURATIONS[e.detail.value])
   }
   const onTreesChange = (e) => {
     setTreeIndex(e.detail.value)
@@ -55,6 +59,7 @@ const Create: React.FC<ModelState> = (props) => {
     console.log(treeIndex)
     console.log(commit)
     console.log(openid)
+    console.log(WAIT_DURATIONS)
   }
 
   const reset = () => {
@@ -86,6 +91,11 @@ const Create: React.FC<ModelState> = (props) => {
           <Picker value={durationCheck} range={DURATIONS} mode='selector' onChange={onDurationChange}>
             <AtList>
               <AtListItem title='种树时长' extraText={durationCheck} />
+            </AtList>
+          </Picker>
+          <Picker value={durationCheck} range={WAIT_DURATIONS} mode='selector' onChange={onWaitDurationChange}>
+            <AtList>
+              <AtListItem title='等待时间' extraText={waitDuration} />
             </AtList>
           </Picker>
           <Picker value={treeCheck} range={trees} mode='selector' onChange={onTreesChange}>

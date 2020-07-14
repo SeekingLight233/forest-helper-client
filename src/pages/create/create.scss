@@ -2,7 +2,7 @@
     overflow-x: hidden;
     display: flex;
     // justify-content: center;
-    background-color: #18191a;
+    background-color: #eff3f6;
     width: 100%;
     height: 100vh;
     .content-wrap{
@@ -13,7 +13,6 @@
         .title{
             margin-bottom: 30px;
             .title-text{
-                color: #fff;
             }
             .icon{
                 display: inline-block;
@@ -29,6 +28,9 @@
             .commit{
                 width: 100%;
                 background-color: #fff;
+                .at-input__container{
+                    transform: translateX(-6px);
+                }
             }
         }
         .buttons{
@@ -38,7 +40,6 @@
                 margin-bottom: 30px;
             }
             .reset-btn{
-                color: #fff;
             }
         }
     }
