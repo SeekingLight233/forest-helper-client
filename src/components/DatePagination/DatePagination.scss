@@ -1,0 +1,12 @@
+.date-pagination{
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    transform: translateX(-12px);
+    .at-button--small{
+        height: 40px;
+        line-height: 40px;
+    }
+}

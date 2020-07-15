@@ -27,7 +27,12 @@ const Home: React.FC<ModelState> = (props) => {
 
     const handleUserInfo = (e) => {
         saveUserInfo({ e, storageOpenid, storageNickName, dispatch })
-        Taro.navigateTo({ url: "../create/create" })
+        const buttonid = e.target.id
+        if (buttonid === "_n_26") {
+            Taro.navigateTo({ url: "../create/create" })
+        } else {
+            Taro.navigateTo({ url: "../selectRoom/selectRoom" })
+        }
     }
     return (
         <View className='home'>
@@ -36,7 +41,7 @@ const Home: React.FC<ModelState> = (props) => {
                     <AtAvatar className='icon' image='cloud://server-ncazq.7365-server-ncazq-1302589525/img/home.png' circle></AtAvatar>
                 </View>
                 <View className='select-wrap'>
-                    <AtButton className='select-button' type='primary' size='small' circle >选择房间</AtButton>
+                    <AtButton className='select-button' onGetUserInfo={handleUserInfo} openType='getUserInfo' type='primary' size='small' circle >选择房间</AtButton>
                 </View>
                 <View className='create-wrap'>
                     <AtButton className='create-button' onGetUserInfo={handleUserInfo} openType='getUserInfo' type='primary' size='small' circle>创建预定房间</AtButton>

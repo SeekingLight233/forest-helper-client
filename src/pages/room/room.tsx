@@ -1,3 +1,6 @@
+/**
+ * @description 创建成功以后的房间信息页面
+ */
 import Nerv from "nervjs";
 import { View, Text } from "@tarojs/components";
 import { AtFab, AtAvatar } from "taro-ui"
@@ -20,7 +23,7 @@ type ModelState = ConnectedProps<typeof connector>
 const Room: React.FC<ModelState> = (props) => {
     const { treeImg } = props;
     return (
-        <View className='share' style='flex-direction:column'>
+        <View className='room' style='flex-direction:column'>
             <View className='title'>
                 <View className='icon'></View><Text className='title-text'>房间信息发布成功 √ </Text>
             </View>

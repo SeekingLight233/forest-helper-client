@@ -15,6 +15,12 @@ export const getDate = () => {
     return date.toLocaleDateString().replace(/\//g, "-")
 }
 
+export const getChineseDate = () => {
+    const date = getDate();
+    const dateArr = date.split("-")
+    return `${dateArr[1]}月${dateArr[2]}日`
+}
+
 export const getTime = () => {
     const time = getLateTime();
 

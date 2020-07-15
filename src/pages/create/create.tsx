@@ -1,3 +1,6 @@
+/**
+ * @description  创建房间页面
+ */
 /* eslint-disable no-shadow */
 import Taro from "@tarojs/taro"
 import Nerv, { useState, useMemo, useShareAppMessage, useRef } from "nervjs";
