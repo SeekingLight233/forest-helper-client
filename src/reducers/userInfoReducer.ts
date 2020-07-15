@@ -1,4 +1,4 @@
-import { ADD, MINUS, USER_INFO } from '../constants/actionTypes'
+import { USER_INFO } from '../constants/actionTypes'
 
 export interface UserState {
   openid: string,
@@ -10,7 +10,7 @@ const INITIAL_STATE: UserState = {
   nickName: "nickName"
 }
 
-export default function counter(state = INITIAL_STATE, action) {
+export default function userInfo(state = INITIAL_STATE, action) {
   switch (action.type) {
     case USER_INFO:
       return {

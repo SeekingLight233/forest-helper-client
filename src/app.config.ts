@@ -2,7 +2,7 @@ export default {
   pages: [
     'pages/home/home',
     "pages/create/create",
-    "pages/share/share",
+    "pages/room/room",
   ],
   window: {
     backgroundTextStyle: 'dark',

@@ -1,4 +1,7 @@
 import { USER_INFO } from "../constants/actionTypes";
+// eslint-disable-next-line import/first
+import Taro from "@tarojs/taro"
+
 
 export const getLateTime = () => {
     const now = Date.now();
@@ -26,10 +29,12 @@ export const getTime = () => {
 export const resolveTime = (date: string, time: string) => {
     const dateArr = date.split("-").map((item) => Number(item))
     const timeArr = time.split(":").map((item) => Number(item))
-    console.log(dateArr);
-    console.log(timeArr);
     return new Date(dateArr[0], dateArr[1] - 1, dateArr[2], timeArr[0], timeArr[1]);
+}
 
+export const generateRoomID = () => {
+    let num = Math.random();
+    return Math.floor(num * 100000000)
 }
 
 
@@ -53,6 +58,8 @@ export const saveUserInfo = ({ e, storageOpenid, storageNickName, dispatch }) =>
             success: res => {
                 console.log("login success")
                 console.log(res.result.openid);
+                console.log(data.nickName);
+
                 Taro.setStorageSync("openid", res.result.openid)
                 Taro.setStorageSync("nickName", data.nickName)
                 dispatch({

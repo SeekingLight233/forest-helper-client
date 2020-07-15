@@ -1,4 +1,4 @@
-import Nerv, { useEffect } from "nervjs";
+import Nerv from "nervjs";
 import { View } from "@tarojs/components";
 import Taro from "@tarojs/taro"
 import { AtButton, AtAvatar } from "taro-ui"
@@ -8,8 +8,8 @@ import { connect, ConnectedProps } from "nerv-redux";
 import { saveUserInfo } from "../../utils/utils";
 
 const mapStateToProps = (state) => ({
-    openid: state.counter.openid,
-    nickName: state.counter.nickName
+    openid: state.userInfo.openid,
+    nickName: state.userInfo.nickName
 })
 
 const connector = connect(mapStateToProps);

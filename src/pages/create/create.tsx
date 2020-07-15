@@ -1,19 +1,20 @@
 /* eslint-disable no-shadow */
+import Taro from "@tarojs/taro"
 import Nerv, { useState, useMemo, useShareAppMessage, useRef } from "nervjs";
-import Taro, { View, Picker, Text, OpenData } from "@tarojs/components";
+import { View, Picker, Text } from "@tarojs/components";
 import { AtButton, AtInput, AtList, AtListItem } from "taro-ui";
 import { DURATIONS, WAIT_DURATIONS } from "../../constants/common"
 import { TREES } from "../../constants/treeData"
 import "./create.scss";
-import { getDate, getTime, getLateTime, resolveTime } from "../../utils/utils";
+import { getDate, getTime, getLateTime, resolveTime, generateRoomID } from "../../utils/utils";
 
 // eslint-disable-next-line import/first
 import { connect, ConnectedProps } from "nerv-redux";
-import { USER_INFO } from "../../constants/actionTypes";
+import { USER_INFO, ROOM_INFO } from "../../constants/actionTypes";
 
 const mapStateToProps = (state) => ({
-  openid: state.counter.openid,
-  nickName: state.counter.nickName
+  openid: state.userInfo.openid,
+  nickName: state.userInfo.nickName
 })
 
 const connector = connect(mapStateToProps);
@@ -30,6 +31,7 @@ const Create: React.FC<ModelState> = (props) => {
   const [treeCheck, setTreeCheck] = useState("默认树种")
   const [commit, setCommit] = useState("")
   const [treeIndex, setTreeIndex] = useState(0)
+  const roomid = generateRoomID()
 
   const trees = useMemo(() => TREES.map(item => item.NAME), [])
 
@@ -56,20 +58,33 @@ const Create: React.FC<ModelState> = (props) => {
   const submit = () => {
 
     const db = wx.cloud.database();
+
     db.collection('rooms').add({
       data: {
         startTime: resolveTime(date, time),
+        waitDuration: waitDuration,
         duration: durationCheck,
         treeImg: TREES[treeIndex].URL,
+        treeSpecies: TREES[treeIndex].NAME,
         commit: commit,
         openid: openid,
         nickName: nickName,
-        menbers: []
+        menbers: [],
+        roomid
       },
+
       success: res => {
-        wx.showToast({
-          title: '信息发布成功',
+        dispatch({
+          type: ROOM_INFO,
+          roomid,
+          nickName: nickName,
+          treeSpecies: treeCheck,
+          treeImg: TREES[treeIndex].URL,
+          startTime: time,
+          duration: durationCheck,
+          commit
         })
+        Taro.navigateTo({ url: "../room/room" })
       },
     })
     // console.log(date);

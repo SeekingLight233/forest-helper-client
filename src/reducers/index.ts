@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux'
-import counter from './mainReducer'
+import userInfo from './userInfoReducer'
+import roomInfo from './roomInfoReducer'
 
 export default combineReducers({
-  counter
+  userInfo,
+  roomInfo
 })
