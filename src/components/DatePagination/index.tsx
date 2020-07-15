@@ -14,7 +14,7 @@ const DatePagination: React.FC = () => {
         <View className='date-pagination' style='flex-direction:row'>
             <AtButton type='secondary' size='small'>上一天</AtButton>
 
-            <Text>{getChineseDate()}</Text>
+            <Text className='date-text'>{getChineseDate()}</Text>
 
             <AtButton type='primary' size='small'>下一天</AtButton>
         </View >

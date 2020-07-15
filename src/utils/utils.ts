@@ -3,26 +3,30 @@ import { USER_INFO } from "../constants/actionTypes";
 import Taro from "@tarojs/taro"
 
 
-export const getLateTime = () => {
-    const now = Date.now();
-    const twoHourLate = now + 7200000;
-    const res = new Date(twoHourLate)
-    return res
-}
+// export const getLateTime = () => {
+//     const now = Date.now();
+//     const twoHourLate = now + 7200000;
+//     const res = new Date(twoHourLate)
+//     return res
+// }
 
 export const getDate = () => {
-    const date = getLateTime()
-    return date.toLocaleDateString().replace(/\//g, "-")
+    const date = new Date()
+    const year = date.getFullYear()
+    const month = date.getMonth();
+    const day = date.getDate();
+    return `${year}-${month + 1}-${day}`
 }
 
 export const getChineseDate = () => {
-    const date = getDate();
-    const dateArr = date.split("-")
-    return `${dateArr[1]}月${dateArr[2]}日`
+    let date = new Date();
+    const month = date.getMonth();
+    const day = date.getDate();
+    return `${month + 1}月${day}日`
 }
 
 export const getTime = () => {
-    const time = getLateTime();
+    const time = new Date()
 
     let hours: string | number = time.getHours();
     hours = hours < 10 ? `0${hours}` : `${hours}`

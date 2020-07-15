@@ -12,9 +12,15 @@ const SelectRoom: React.FC = (props) => {
     return (
         <View className='select-room' style='flex-direction:column'>
             <DatePagination></DatePagination>
-            <RoomInfo></RoomInfo>
-            <RoomInfo></RoomInfo>
-            <RoomInfo></RoomInfo>
+            <View className='room-info-area'>
+                <RoomInfo></RoomInfo>
+                <RoomInfo></RoomInfo>
+                <RoomInfo></RoomInfo>
+                <RoomInfo></RoomInfo>
+                <RoomInfo></RoomInfo>
+                <RoomInfo></RoomInfo>
+                <RoomInfo></RoomInfo>
+            </View>
         </View >
     )
 }

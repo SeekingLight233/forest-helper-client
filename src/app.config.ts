@@ -3,7 +3,8 @@ export default {
     'pages/home/home',
     "pages/create/create",
     "pages/room/room",
-    "pages/selectRoom/selectRoom"
+    "pages/selectRoom/selectRoom",
+
   ],
   window: {
     backgroundTextStyle: 'dark',

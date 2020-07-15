@@ -1,12 +1,18 @@
 .date-pagination{
+    position: fixed;
+    z-index: 10;
     display: flex;
     justify-content: center;
     width: 100vw;
     padding-top: 1vh;
-    padding-bottom: 1vh;
+    padding-bottom: 2vh;
+    background-color: #eff3f6;
     transform: translateX(-12px);
     .at-button--small{
         height: 40px;
         line-height: 40px;
+    }
+    .date-text{
+        transform: translateY(-8px);
     }
 }

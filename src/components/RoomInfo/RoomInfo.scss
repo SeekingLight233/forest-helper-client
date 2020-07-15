@@ -1,2 +1,70 @@
 .room-info{
+    padding:10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    border-radius: 10px;
+
+    .tree-icon{
+        width: 160px;
+        height: 160px;
+        .at-avatar--large{
+            width: 140px;
+            height: 140px;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+        .at-avatar__img {
+            background-color: #eff3f6;           
+        }
+            
+    }
+    .room-info-detail{
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        .room-info-item{
+            display: inline-block;
+            width: 320px;
+            height: 42px;
+            line-height: 42px;
+            background-color: #eff3f6;
+            border-radius: 4px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+            padding-left: 20px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 26px;
+            .text-info{
+                display: inline;
+                margin-left: 18px;
+            }
+        }
+    }
+    .subscribe-area{
+        width: 160px;
+        height: 160px;
+        // border: 1px solid black
+        .at-fab{
+            width: 140px;
+            height: 140px;
+            margin-top: 10px;
+            margin-left: 10px;
+            box-shadow: none;
+        }
+        .at-icon{
+            font-size: 70px;
+            transform: translateX(-10px) translateY(-10px);
+        }
+    }
+    .active{
+        color: #39b54a;
+        background-color: #eff3f6;
+        border:6px solid #39b54a;
+    }
 }

@@ -25,7 +25,7 @@ const Room: React.FC<ModelState> = (props) => {
     return (
         <View className='room' style='flex-direction:column'>
             <View className='title'>
-                <View className='icon'></View><Text className='title-text'>房间信息发布成功 √ </Text>
+                <View className='icon'></View><Text className='title-text'>房间信息发布成功 </Text><View className='at-icon at-icon-check'></View>
             </View>
             <View className='tree-img' style='flex-direction:row'>
                 <AtAvatar image={treeImg} size='large' circle ></AtAvatar>

@@ -48,6 +48,7 @@
     "@babel/core": "^7.8.0",
     "@tarojs/mini-runner": "3.0.2",
     "@tarojs/webpack-runner": "3.0.2",
+    "@types/classnames": "^2.2.10",
     "@types/react": "^16.0.0",
     "@types/webpack-env": "^1.13.6",
     "@typescript-eslint/eslint-plugin": "^2.x",

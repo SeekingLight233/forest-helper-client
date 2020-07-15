@@ -9,7 +9,7 @@ import { AtButton, AtInput, AtList, AtListItem } from "taro-ui";
 import { DURATIONS, WAIT_DURATIONS } from "../../constants/common"
 import { TREES } from "../../constants/treeData"
 import "./create.scss";
-import { getDate, getTime, getLateTime, resolveTime, generateRoomID } from "../../utils/utils";
+import { getDate, getTime, resolveTime, generateRoomID } from "../../utils/utils";
 
 // eslint-disable-next-line import/first
 import { connect, ConnectedProps } from "nerv-redux";
@@ -120,7 +120,7 @@ const Create: React.FC<ModelState> = (props) => {
               <AtListItem title='日期' extraText={date} />
             </AtList>
           </Picker>
-          <Picker value={time} mode='time' onChange={onTimeChange}>
+          <Picker value={time} mode='time' onChange={onTimeChange} start={time}>
             <AtList>
               <AtListItem title='时间' extraText={time} />
             </AtList>
