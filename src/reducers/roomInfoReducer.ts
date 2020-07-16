@@ -7,7 +7,8 @@ export interface RoomState {
     treeImg: string,
     startTime: string,
     duration: string,
-    commit: string
+    commit: string,
+    isRoomOwner?: boolean
 }
 
 const INITIAL_STATE: RoomState = {
@@ -17,7 +18,8 @@ const INITIAL_STATE: RoomState = {
     treeImg: "",
     startTime: "",
     duration: "",
-    commit: ""
+    commit: "",
+    isRoomOwner: false
 }
 
 export default function roomInfo(state = INITIAL_STATE, action) {

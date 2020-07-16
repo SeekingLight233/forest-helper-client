@@ -42,6 +42,14 @@ export const resolveTime = (date: string, time: string) => {
     return new Date(dateArr[0], dateArr[1] - 1, dateArr[2], timeArr[0], timeArr[1]);
 }
 
+export const resolveDateToZh = (date: string) => {
+    let dateArr = date.split("-");
+    if (dateArr[1].charAt(0) === '0') {
+        dateArr[1] = dateArr[1].slice(-1);
+    }
+    return `${dateArr[1]}月${dateArr[2]}日`
+}
+
 export const generateRoomID = () => {
     let num = Math.random();
     return Math.floor(num * 100000000)

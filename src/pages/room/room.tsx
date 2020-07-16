@@ -11,8 +11,8 @@ import ShareCard from "../../components/ShareCard";
 import { connect, ConnectedProps } from "nerv-redux";
 
 const mapStateToProps = (state) => {
-    const { roomid, nickName, treeSpecies, startTime, duration, commit, treeImg } = state.roomInfo;
-    return { roomid, nickName, treeSpecies, startTime, duration, commit, treeImg }
+    const { roomid, nickName, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner } = state.roomInfo;
+    return { roomid, nickName, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner }
 }
 
 const connector = connect(mapStateToProps);
@@ -21,12 +21,19 @@ type ModelState = ConnectedProps<typeof connector>
 
 
 const Room: React.FC<ModelState> = (props) => {
-    const { treeImg } = props;
+    const { treeImg, isRoomOwner } = props;
     return (
         <View className='room' style='flex-direction:column'>
-            <View className='title'>
-                <View className='icon'></View><Text className='title-text'>房间信息发布成功 </Text><View className='at-icon at-icon-check'></View>
-            </View>
+            {isRoomOwner ?
+                <View className='title'>
+                    <View className='icon'></View><Text className='title-text'>房间信息发布成功 </Text><View className='at-icon at-icon-check'></View>
+                </View>
+                :
+                <View className='title'>
+                    <View className='icon'></View><Text className='title-text'>房间信息</Text>
+                </View>
+            }
+
             <View className='tree-img' style='flex-direction:row'>
                 <AtAvatar image={treeImg} size='large' circle ></AtAvatar>
             </View>

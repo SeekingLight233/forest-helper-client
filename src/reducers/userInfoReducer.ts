@@ -2,12 +2,12 @@ import { USER_INFO } from '../constants/actionTypes'
 
 export interface UserState {
   openid: string,
-  nickName: string
+  nickName: string,
 }
 
 const INITIAL_STATE: UserState = {
   openid: "openid",
-  nickName: "nickName"
+  nickName: "nickName",
 }
 
 export default function userInfo(state = INITIAL_STATE, action) {

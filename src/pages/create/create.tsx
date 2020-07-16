@@ -9,7 +9,7 @@ import { AtButton, AtInput, AtList, AtListItem } from "taro-ui";
 import { DURATIONS, WAIT_DURATIONS } from "../../constants/common"
 import { TREES } from "../../constants/treeData"
 import "./create.scss";
-import { getDate, getTime, resolveTime, generateRoomID } from "../../utils/utils";
+import { getDate, getTime, resolveTime, generateRoomID, resolveDateToZh } from "../../utils/utils";
 
 // eslint-disable-next-line import/first
 import { connect, ConnectedProps } from "nerv-redux";
@@ -65,6 +65,7 @@ const Create: React.FC<ModelState> = (props) => {
     db.collection('rooms').add({
       data: {
         startTime: resolveTime(date, time),
+        date: resolveDateToZh(date),
         waitDuration: waitDuration,
         duration: durationCheck,
         treeImg: TREES[treeIndex].URL,
