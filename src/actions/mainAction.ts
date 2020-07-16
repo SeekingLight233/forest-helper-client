@@ -5,6 +5,7 @@ import {
 import Taro from "@tarojs/taro"
 import { MAX_PAGE_LENGTH } from '../constants/common'
 
+// @todo 不太确定小程序是否支持async和await，就先这样吧
 export function getRooms(date: string, page: number) {
   return (dispatch, getState) => {
     const list: Array<any> = getState().getRooms.list
@@ -13,14 +14,20 @@ export function getRooms(date: string, page: number) {
       date
     }).get({
       success: function (res) {
-        console.log(res.data)
-        console.log(page)
         dispatch({
           type: GET_ROOMS,
           list: list.concat(res.data)
         })
         Taro.hideLoading()
         if (res.data.length < 1) {
+          if (page === 0) {
+            Taro.showToast({
+              title: "还没有人创建房间哦",
+              icon: "none",
+              duration: 3000
+            })
+            return
+          }
           Taro.showToast({
             title: "已经没有数据啦~~",
             icon: "none"

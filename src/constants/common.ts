@@ -1,4 +1,4 @@
-export const DURATIONS = ["30分钟", "60分钟", "90分钟", "120分钟"]
+export const DURATIONS = ["30分钟", "60分钟", "90分钟", "120分钟", "150分钟", "180分钟"]
 
 let _wait: string[] = []
 for (let i = 5; i <= 20; i++) {

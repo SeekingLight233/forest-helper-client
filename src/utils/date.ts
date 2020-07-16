@@ -14,8 +14,8 @@ export const getDate = () => {
     return `${year}-${month + 1}-${day}`
 }
 
-export const getChineseDate = () => {
-    let date = new Date();
+export const getChineseDate = (dateUnix) => {
+    const date = new Date(dateUnix)
     const month = date.getMonth();
     const day = date.getDate();
     return `${month + 1}月${day}日`

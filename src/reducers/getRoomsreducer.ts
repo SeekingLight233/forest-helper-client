@@ -2,7 +2,7 @@ import { GET_ROOMS, CLEAR_ROOMS } from '../constants/actionTypes'
 import { RoomState } from './roomInfoReducer'
 
 export interface RoomListState {
-    list: RoomState[]
+    list: RoomState[],
 }
 
 const INITIAL_STATE: RoomListState = {

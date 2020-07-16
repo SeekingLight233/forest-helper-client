@@ -11,7 +11,7 @@ import Taro, { useReachBottom } from "@tarojs/taro"
 import { connect, ConnectedProps } from "nerv-redux";
 import { RoomState } from "../../reducers/roomInfoReducer";
 import RoomInfo from "../../components/RoomInfo";
-import { getTime } from "../../utils/date";
+import { getTime, getChineseDate } from "../../utils/date";
 import { CLEAR_ROOMS } from "../../constants/actionTypes";
 
 
@@ -24,13 +24,15 @@ type ModelState = ConnectedProps<typeof connector>
 const SelectRoom: React.FC<ModelState> = (props) => {
     const list: RoomState[] = props.list;
     const dispatch = props.dispatch;
-    const [page, setPage] = useState(0)
 
+    const [page, setPage] = useState(0)
+    const [date, setDate] = useState(Date.now())
     const fetchData = () => {
         Taro.showLoading({
             title: '加载中',
         })
-        dispatch(getRooms("7月16日", page))
+        const resolveDate = getChineseDate(date)
+        dispatch(getRooms(resolveDate, page))
     }
     /**
      * @description 请求首屏数据
@@ -44,7 +46,7 @@ const SelectRoom: React.FC<ModelState> = (props) => {
                 setPage(0)
             }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [date])
 
     /**
      * @description 触底加载下一页
@@ -54,7 +56,7 @@ const SelectRoom: React.FC<ModelState> = (props) => {
         Taro.showLoading({
             title: '加载中',
         })
-        dispatch(getRooms("7月16日", page))
+        dispatch(getRooms(date, page))
     })
 
     const renderRooms = () => {
@@ -64,9 +66,16 @@ const SelectRoom: React.FC<ModelState> = (props) => {
         })
     }
 
+    /**
+     * @description 改变日期触发重渲染
+     */
+    const changeDate = (newDate) => {
+        setDate(newDate)
+        setPage(0)
+    }
     return (
         <View className='select-room' style='flex-direction:column'>
-            <DatePagination></DatePagination>
+            <DatePagination date={date} page={page} changeDate={changeDate}></DatePagination>
             <View className='room-info-area'>
                 {renderRooms()}
             </View>
