@@ -3,19 +3,29 @@ import {
 } from '../constants/actionTypes'
 // eslint-disable-next-line import/first
 import Taro from "@tarojs/taro"
+import { MAX_PAGE_LENGTH } from '../constants/common'
 
-export function getRooms(date: string) {
+export function getRooms(date: string, page: number) {
   return (dispatch, getState) => {
+    const list: Array<any> = getState().getRooms.list
     const db = wx.cloud.database()
-    db.collection('rooms').where({
+    db.collection('rooms').skip(page * MAX_PAGE_LENGTH).limit(MAX_PAGE_LENGTH).where({
       date
     }).get({
       success: function (res) {
+        console.log(res.data)
+        console.log(page)
         dispatch({
           type: GET_ROOMS,
-          list: res.data
+          list: list.concat(res.data)
         })
         Taro.hideLoading()
+        if (res.data.length < 1) {
+          Taro.showToast({
+            title: "已经没有数据啦~~",
+            icon: "none"
+          })
+        }
       }
     })
 

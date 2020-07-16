@@ -1,4 +1,4 @@
-import { GET_ROOMS } from '../constants/actionTypes'
+import { GET_ROOMS, CLEAR_ROOMS } from '../constants/actionTypes'
 import { RoomState } from './roomInfoReducer'
 
 export interface RoomListState {
@@ -16,6 +16,11 @@ export default function getRooms(state = INITIAL_STATE, action): RoomListState {
             return {
                 ...state,
                 list
+            }
+        case CLEAR_ROOMS:
+            return {
+                ...state,
+                list: []
             }
         default:
             return state

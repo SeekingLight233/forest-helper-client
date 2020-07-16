@@ -19,13 +19,14 @@ type ModelState = ConnectedProps<typeof connector>
 
 
 const Home: React.FC<ModelState> = (props) => {
-
     const { openid, nickName, dispatch } = props
     const storageOpenid = Taro.getStorageSync("openid");
     const storageNickName = Taro.getStorageSync("nickName")
 
-
     const handleUserInfo = (e) => {
+        Taro.showLoading({
+            title: '加载中',
+        })
         saveUserInfo({ e, storageOpenid, storageNickName, dispatch })
         const buttonid = e.target.id
         if (buttonid === "_n_26") {

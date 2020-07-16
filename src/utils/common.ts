@@ -15,6 +15,8 @@ export const saveUserInfo = ({ e, storageOpenid, storageNickName, dispatch }) =>
             openid: storageOpenid,
             nickName: storageNickName
         })
+        Taro.hideLoading()
+
     } else {
         wx.cloud.callFunction({
             name: 'login',
@@ -27,6 +29,7 @@ export const saveUserInfo = ({ e, storageOpenid, storageNickName, dispatch }) =>
                     openid: res.result.openid,
                     nickName: data.nickName
                 })
+                Taro.hideLoading()
             },
             fail: err => {
                 console.error(err)

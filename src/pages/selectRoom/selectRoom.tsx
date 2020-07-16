@@ -2,16 +2,17 @@
 /**
  *@description 选择房间页面
  */
-import Nerv, { useEffect } from "nervjs";
+import Nerv, { useEffect, useState } from "nervjs";
 import { View } from "@tarojs/components";
 import "./selectRoom.scss"
 import DatePagination from "../../components/DatePagination";
 import { getRooms } from "../../actions/mainAction";
-import Taro from "@tarojs/taro"
+import Taro, { useReachBottom } from "@tarojs/taro"
 import { connect, ConnectedProps } from "nerv-redux";
 import { RoomState } from "../../reducers/roomInfoReducer";
 import RoomInfo from "../../components/RoomInfo";
 import { getTime } from "../../utils/date";
+import { CLEAR_ROOMS } from "../../constants/actionTypes";
 
 
 const mapStateToProps = (state) => {
@@ -23,18 +24,38 @@ type ModelState = ConnectedProps<typeof connector>
 const SelectRoom: React.FC<ModelState> = (props) => {
     const list: RoomState[] = props.list;
     const dispatch = props.dispatch;
-    // const [list, setList] = useState([])
+    const [page, setPage] = useState(0)
+
     const fetchData = () => {
         Taro.showLoading({
             title: '加载中',
         })
-        dispatch(getRooms("7月16日"))
+        dispatch(getRooms("7月16日", page))
     }
-
+    /**
+     * @description 请求首屏数据
+     */
     useEffect(() => {
         fetchData()
+        if (list.length <= 5)
+            // 销毁组件清空状态
+            return () => {
+                dispatch({ type: CLEAR_ROOMS })
+                setPage(0)
+            }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    /**
+     * @description 触底加载下一页
+     */
+    useReachBottom(() => {
+        setPage(val => val + 1)
+        Taro.showLoading({
+            title: '加载中',
+        })
+        dispatch(getRooms("7月16日", page))
+    })
 
     const renderRooms = () => {
         return list.map((item, index) => {
