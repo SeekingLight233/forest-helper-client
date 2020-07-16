@@ -1,8 +1,11 @@
 import { combineReducers } from 'redux'
-import userInfo from './userInfoReducer'
-import roomInfo from './roomInfoReducer'
+import userInfo, { UserState } from './userInfoReducer'
+import roomInfo, { RoomState } from './roomInfoReducer'
+import getRooms, { RoomListState } from './getRoomsreducer'
+
 
 export default combineReducers({
   userInfo,
-  roomInfo
+  roomInfo,
+  getRooms
 })

@@ -6,7 +6,7 @@ import { View, Text } from "@tarojs/components";
 import "./DatePagination.scss"
 // eslint-disable-next-line import/first
 import { AtIcon, AtButton } from "taro-ui";
-import { getChineseDate } from "../../utils/utils";
+import { getChineseDate } from "../../utils/date";
 
 
 const DatePagination: React.FC = () => {

@@ -10,7 +10,7 @@ const INITIAL_STATE: UserState = {
   nickName: "nickName",
 }
 
-export default function userInfo(state = INITIAL_STATE, action) {
+export default function userInfo(state = INITIAL_STATE, action): UserState {
   switch (action.type) {
     case USER_INFO:
       return {

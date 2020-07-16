@@ -1,7 +1,3 @@
-import { USER_INFO } from "../constants/actionTypes";
-// eslint-disable-next-line import/first
-import Taro from "@tarojs/taro"
-
 
 // export const getLateTime = () => {
 //     const now = Date.now();
@@ -25,9 +21,7 @@ export const getChineseDate = () => {
     return `${month + 1}月${day}日`
 }
 
-export const getTime = () => {
-    const time = new Date()
-
+export const getTime = (time: Date) => {
     let hours: string | number = time.getHours();
     hours = hours < 10 ? `0${hours}` : `${hours}`
     let min: string | number = time.getMinutes();
@@ -53,42 +47,4 @@ export const resolveDateToZh = (date: string) => {
 export const generateRoomID = () => {
     let num = Math.random();
     return Math.floor(num * 100000000)
-}
-
-
-/**
- * @description 将用户信息存储到store
- * @param e onGetUserInfo 中的事件回调参数
- */
-export const saveUserInfo = ({ e, storageOpenid, storageNickName, dispatch }) => {
-    const data = JSON.parse(e.detail.rawData)
-    if (storageOpenid && storageNickName) {
-        console.log("username exist");
-        dispatch({
-            type: USER_INFO,
-            openid: storageOpenid,
-            nickName: storageNickName
-        })
-    } else {
-        wx.cloud.callFunction({
-            name: 'login',
-            data: {},
-            success: res => {
-                console.log("login success")
-                console.log(res.result.openid);
-                console.log(data.nickName);
-
-                Taro.setStorageSync("openid", res.result.openid)
-                Taro.setStorageSync("nickName", data.nickName)
-                dispatch({
-                    type: USER_INFO,
-                    openid: res.result.openid,
-                    nickName: data.nickName
-                })
-            },
-            fail: err => {
-                console.error(err)
-            }
-        })
-    }
 }

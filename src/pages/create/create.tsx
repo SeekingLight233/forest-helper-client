@@ -9,7 +9,7 @@ import { AtButton, AtInput, AtList, AtListItem } from "taro-ui";
 import { DURATIONS, WAIT_DURATIONS } from "../../constants/common"
 import { TREES } from "../../constants/treeData"
 import "./create.scss";
-import { getDate, getTime, resolveTime, generateRoomID, resolveDateToZh } from "../../utils/utils";
+import { getDate, getTime, resolveTime, generateRoomID, resolveDateToZh } from "../../utils/date";
 
 // eslint-disable-next-line import/first
 import { connect, ConnectedProps } from "nerv-redux";
@@ -28,7 +28,7 @@ const Create: React.FC<ModelState> = (props) => {
   const { openid, nickName, dispatch } = props
 
   const [date, setDate] = useState(getDate())
-  const [time, setTime] = useState(getTime())
+  const [time, setTime] = useState(getTime(new Date()))
   const [durationCheck, setDurationCheck] = useState("30分钟")
   const [waitDuration, setWaitDuration] = useState("5分钟")
   const [treeCheck, setTreeCheck] = useState("默认树种")
@@ -58,10 +58,11 @@ const Create: React.FC<ModelState> = (props) => {
     setCommit(val)
   }
 
+  /**
+   * @todo 这个地方先这样吧，参数太多逻辑抽出来反而会更乱
+   */
   const submit = () => {
-
     const db = wx.cloud.database();
-
     db.collection('rooms').add({
       data: {
         startTime: resolveTime(date, time),
@@ -75,22 +76,21 @@ const Create: React.FC<ModelState> = (props) => {
         nickName: nickName,
         menbers: [],
         roomid
-      },
-
-      success: res => {
-        dispatch({
-          type: ROOM_INFO,
-          roomid,
-          nickName: nickName,
-          treeSpecies: treeCheck,
-          treeImg: TREES[treeIndex].URL,
-          startTime: time,
-          duration: durationCheck,
-          commit
-        })
-        Taro.navigateTo({ url: "../room/room" })
-      },
+      }
+    }).then(() => {
+      dispatch({
+        type: ROOM_INFO,
+        roomid,
+        nickName: nickName,
+        treeSpecies: treeCheck,
+        treeImg: TREES[treeIndex].URL,
+        startTime: time,
+        duration: durationCheck,
+        commit
+      })
+      Taro.navigateTo({ url: "../room/room" })
     })
+
     // console.log(date);
     // console.log(time);
     // console.log(durationCheck)
@@ -102,7 +102,7 @@ const Create: React.FC<ModelState> = (props) => {
 
   const reset = () => {
     setDate(getDate());
-    setTime(getTime())
+    setTime(getTime(new Date()))
     setDurationCheck("30分钟");
     setTreeCheck("默认树种");
     setCommit("")

@@ -22,7 +22,7 @@ const INITIAL_STATE: RoomState = {
     isRoomOwner: false
 }
 
-export default function roomInfo(state = INITIAL_STATE, action) {
+export default function roomInfo(state = INITIAL_STATE, action): RoomState {
     const { roomid, nickName, treeSpecies, treeImg, startTime, duration, commit } = action
     switch (action.type) {
         case ROOM_INFO:

@@ -5,7 +5,7 @@ import { AtButton, AtAvatar } from "taro-ui"
 import "./home.scss"
 // eslint-disable-next-line import/first
 import { connect, ConnectedProps } from "nerv-redux";
-import { saveUserInfo } from "../../utils/utils";
+import { saveUserInfo } from "../../utils/common";
 
 const mapStateToProps = (state) => ({
     openid: state.userInfo.openid,
