@@ -61,8 +61,8 @@ const SelectRoom: React.FC<ModelState> = (props) => {
 
     const renderRooms = () => {
         return list.map((item, index) => {
-            const { treeImg, nickName, startTime, duration, commit } = item
-            return <RoomInfo key={item.roomid} treeImg={treeImg} nickName={nickName} startTime={getTime(startTime as any)} duration={duration} commit={commit}></RoomInfo>
+            const { treeImg, nickName, startTime, duration, commit, roomid, treeSpecies } = item
+            return <RoomInfo key={item.roomid} roomid={roomid} treeSpecies={treeSpecies} treeImg={treeImg} nickName={nickName} startTime={getTime(startTime as any)} duration={duration} commit={commit}></RoomInfo>
         })
     }
 

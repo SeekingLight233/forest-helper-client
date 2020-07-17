@@ -1,11 +1,10 @@
 import Nerv, { Component } from 'nervjs'
 import { Provider } from 'nerv-redux'
 
-import configStore from './store'
+import { store } from './store'
 
 import './app.scss'
 
-const store = configStore()
 
 class App extends Component {
   componentDidMount() {

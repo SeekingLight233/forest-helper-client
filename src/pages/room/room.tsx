@@ -22,6 +22,8 @@ type ModelState = ConnectedProps<typeof connector>
 
 const Room: React.FC<ModelState> = (props) => {
     const { treeImg, isRoomOwner } = props;
+
+
     return (
         <View className='room' style='flex-direction:column'>
             {isRoomOwner ?

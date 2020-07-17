@@ -1,7 +1,7 @@
 import { ROOM_INFO } from '../constants/actionTypes'
 
 export interface RoomState {
-    roomid: number,
+    roomid: string,
     nickName: string,
     treeSpecies: string,
     treeImg: string,
@@ -12,7 +12,7 @@ export interface RoomState {
 }
 
 const INITIAL_STATE: RoomState = {
-    roomid: 0,
+    roomid: "",
     nickName: "",
     treeSpecies: "",
     treeImg: "",

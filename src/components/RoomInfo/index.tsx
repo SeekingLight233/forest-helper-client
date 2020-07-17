@@ -6,18 +6,51 @@ import Nerv, { useState } from "nervjs";
 import { View, Text } from "@tarojs/components";
 import "./RoomInfo.scss"
 import { AtAvatar, AtFab } from "taro-ui";
+// eslint-disable-next-line import/first
+import Taro from "@tarojs/taro"
+import { ROOM_INFO } from "../../constants/actionTypes";
+
+import { store } from "../../store/index"
 
 interface IProps {
     treeImg: string,
     nickName: string,
     startTime: string,
     duration: string,
-    commit?: string
+    treeSpecies: string,
+    commit?: string,
+    roomid?: string,
 }
 
 const RoomInfo: React.FC<IProps> = (props) => {
-    const { treeImg, nickName, startTime, duration, commit } = props
+    const { treeImg, nickName, startTime, duration, commit, roomid, treeSpecies } = props
     const [subscribe, setSubscribe] = useState(false)
+
+    const [touch, setTouch] = useState(false)
+
+    const handleTouchStart = () => {
+        console.log("start");
+        setTouch(true)
+    }
+
+    const handleTouchEnd = () => {
+        setTouch(false)
+        // @todo dispatch room info
+        store.dispatch(
+            {
+                type: ROOM_INFO,
+                roomid,
+                nickName: nickName,
+                treeSpecies,
+                treeImg,
+                startTime,
+                duration,
+                commit
+            })
+        Taro.navigateTo({ url: "../room/room" })
+
+
+    }
 
     const handleSubscribe = () => {
         setSubscribe(true)
@@ -26,8 +59,11 @@ const RoomInfo: React.FC<IProps> = (props) => {
     const cancelSubscribe = () => {
         setSubscribe(false)
     }
+
+    const cls = touch ? "room-info touch" : "room-info"
+
     return (
-        <View className='room-info'>
+        <View className={cls} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
             <View className='tree-icon'>
                 <AtAvatar image={treeImg} size='large' circle ></AtAvatar>
             </View>
@@ -48,7 +84,8 @@ const RoomInfo: React.FC<IProps> = (props) => {
                 </View>
 
                 {
-                    commit ?
+                    commit
+                        ?
                         <View className='room-info-item' style="style='flex-direction:row;">
                             <View className='at-icon at-icon-file-generic'></View>
                             <Text className='text-info'>{commit}</Text>
