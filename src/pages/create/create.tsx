@@ -74,10 +74,15 @@ const Create: React.FC<ModelState> = (props) => {
         commit: commit,
         openid: openid,
         nickName: nickName,
-        menbers: [],
+        member: [],
         roomid
       }
     }).then(() => {
+      Taro.showToast({
+        title: '房间信息发布成功!',
+        icon: 'success',
+        duration: 2000
+      })
       dispatch({
         type: ROOM_INFO,
         roomid,

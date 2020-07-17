@@ -1,15 +1,22 @@
 import {
-  GET_ROOMS
+  GET_ROOMS,
+  SUBSCRIBE_ROOM,
+  USER_INFO
 } from '../constants/actionTypes'
 // eslint-disable-next-line import/first
 import Taro from "@tarojs/taro"
 import { MAX_PAGE_LENGTH } from '../constants/common'
+import { store } from "../store/index"
+
+const db = wx.cloud.database()
 
 // @todo 不太确定小程序是否支持async和await，就先这样吧
 export function getRooms(date: string, page: number) {
   return (dispatch, getState) => {
     const list: Array<any> = getState().getRooms.list
-    const db = wx.cloud.database()
+    Taro.showLoading({
+      title: '加载中',
+    })
     db.collection('rooms').skip(page * MAX_PAGE_LENGTH).limit(MAX_PAGE_LENGTH).where({
       date
     }).get({
@@ -35,10 +42,49 @@ export function getRooms(date: string, page: number) {
         }
       }
     })
+  }
+}
+
+export function subscribeRoom(roomid: number, member: string[]) {
+  console.log(member);
+  return (dispatch, getState) => {
+    console.log("I am here!!!");
+    db.collection('rooms').where({
+      roomid
+    }).update({
+      data: {
+        member
+      },
+      success: function (res) {
+        Taro.hideLoading()
+        console.log("OK!!!");
+        console.log(res.data)
+      }
+    })
 
   }
 }
 
+export const deleteRoom = (roomid: number) => {
+  db.collection('rooms').where({
+    roomid
+  }).remove({
+    success: function (res) {
+      Taro.hideLoading()
+      console.log("delete OK!!!");
+      Taro.navigateBack({
+        complete: () => {
+          const state = store.getState().userInfo;
+          store.dispatch({
+            type: USER_INFO,
+            ...state,
+            deleteRoomid: roomid
+          })
+        }
+      })
+    }
+  })
+}
 
 // 异步的action
 // export function asyncTest(payload) {

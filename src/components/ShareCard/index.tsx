@@ -1,15 +1,36 @@
-import Nerv from "nervjs";
-import { View } from "@tarojs/components";
-import { AtCard, AtIcon } from "taro-ui"
+/* eslint-disable import/first */
+import Nerv, { useState } from "nervjs";
+import { View, Button } from "@tarojs/components";
+import { AtCard, AtIcon, AtActionSheet, AtActionSheetItem } from "taro-ui"
 import "./ShareCard.scss"
-// eslint-disable-next-line import/first
+import Taro from '@tarojs/taro'
 import { RoomState } from "../../reducers/roomInfoReducer";
+import { deleteRoom } from '../../actions/mainAction';
 
 
+interface IProps {
+    roomOwner: boolean
+}
 
+const ShareCard: React.FC<RoomState & IProps> = (props) => {
+    const { nickName, treeSpecies, startTime, duration, commit, roomOwner, roomid } = props
+    const onDeleteRoom = () => {
+        Taro.showActionSheet({
+            itemList: ["确认"],
+            success: function (res) {
+                if ((res as any).tapIndex === 0) {
+                    Taro.showLoading({
+                        title: "正在删除..."
+                    })
+                    deleteRoom(roomid)
+                }
+            },
+            fail: function (res) {
+                console.log(res.errMsg)
+            }
+        })
 
-const ShareCard: React.FC<RoomState> = (props) => {
-    const { nickName, treeSpecies, startTime, duration, commit } = props
+    }
     return (
         <View className='share-card' style='flex-direction:column'>
             <View className='share-item'>
@@ -36,6 +57,9 @@ const ShareCard: React.FC<RoomState> = (props) => {
                 </AtCard>
             </View> : null}
 
+            {roomOwner ? <View className='delete-area'>
+                <Button type='warn' onClick={onDeleteRoom}>删除房间</Button>
+            </View> : null}
         </View>
     )
 }

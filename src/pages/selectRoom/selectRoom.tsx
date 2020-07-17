@@ -17,20 +17,21 @@ import { CLEAR_ROOMS } from "../../constants/actionTypes";
 
 const mapStateToProps = (state) => {
     const { list } = state.getRooms;
-    return { list }
+    const { deleteRoomid } = state.userInfo;
+    return { list, deleteRoomid }
 }
+
 const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>
 const SelectRoom: React.FC<ModelState> = (props) => {
     const list: RoomState[] = props.list;
+    const deleteRoomid: number = props.deleteRoomid;
     const dispatch = props.dispatch;
 
     const [page, setPage] = useState(0)
     const [date, setDate] = useState(Date.now())
+
     const fetchData = () => {
-        Taro.showLoading({
-            title: '加载中',
-        })
         const resolveDate = getChineseDate(date)
         dispatch(getRooms(resolveDate, page))
     }
@@ -38,6 +39,8 @@ const SelectRoom: React.FC<ModelState> = (props) => {
      * @description 请求首屏数据
      */
     useEffect(() => {
+        console.log(deleteRoomid);
+
         fetchData()
         if (list.length <= 5)
             // 销毁组件清空状态
@@ -46,7 +49,7 @@ const SelectRoom: React.FC<ModelState> = (props) => {
                 setPage(0)
             }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [date])
+    }, [date, deleteRoomid])
 
 
     /**
@@ -62,8 +65,9 @@ const SelectRoom: React.FC<ModelState> = (props) => {
 
     const renderRooms = () => {
         return list.map((item, index) => {
-            const { treeImg, nickName, startTime, duration, commit, roomid, treeSpecies } = item
-            return <RoomInfo key={item.roomid} roomid={roomid} treeSpecies={treeSpecies} treeImg={treeImg} nickName={nickName} startTime={getTime(startTime as any)} duration={duration} commit={commit}></RoomInfo>
+            const { treeImg, nickName, startTime, duration, commit, roomid, treeSpecies, member, _openid } = item
+
+            return <RoomInfo _openid={_openid} key={item.roomid} roomid={roomid} member={member} treeSpecies={treeSpecies} treeImg={treeImg} nickName={nickName} startTime={getTime(startTime as any)} duration={duration} commit={commit}></RoomInfo>
         })
     }
 

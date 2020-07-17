@@ -9,8 +9,17 @@ import { AtAvatar, AtFab } from 'taro-ui'
 // eslint-disable-next-line import/first
 import Taro from '@tarojs/taro'
 import { ROOM_INFO } from '../../constants/actionTypes'
+import { connect, ConnectedProps } from "nerv-redux";
+import { subscribeRoom } from '../../actions/mainAction'
 
-import { store } from '../../store/index'
+const mapStateToProps = (state) => ({
+  openid: state.userInfo.openid,
+  nickName: state.userInfo.nickName
+})
+
+const connector = connect(mapStateToProps);
+
+type ModelState = ConnectedProps<typeof connector>
 
 interface IProps {
   treeImg: string
@@ -19,13 +28,15 @@ interface IProps {
   duration: string
   treeSpecies: string
   commit?: string
-  roomid?: string
+  roomid?: number
+  member: string[]
+  _openid: string
 }
 
-const RoomInfo: React.FC<IProps> = (props) => {
-  const { treeImg, nickName, startTime, duration, commit, roomid, treeSpecies } = props
-  const [subscribe, setSubscribe] = useState(false)
-
+const RoomInfo: React.FC<IProps & ModelState> = (props) => {
+  const { treeImg, nickName, startTime, duration, commit, roomid, treeSpecies, member, openid, dispatch, _openid } = props
+  const isSubscribe = member.includes(openid)
+  const [subscribe, setSubscribe] = useState(isSubscribe)
   const [touch, setTouch] = useState(false)
 
   const handleTouchStart = () => {
@@ -36,7 +47,7 @@ const RoomInfo: React.FC<IProps> = (props) => {
   const navigateToRoom = () => {
     setTouch(false)
     // @todo dispatch room info
-    store.dispatch({
+    dispatch({
       type: ROOM_INFO,
       roomid,
       nickName: nickName,
@@ -45,12 +56,18 @@ const RoomInfo: React.FC<IProps> = (props) => {
       startTime,
       duration,
       commit,
-      isRoomOwner: false
+      isRoomOwner: false,
+      _openid
     })
     Taro.navigateTo({ url: '../room/room' })
   }
 
   const handleSubscribe = (e) => {
+    Taro.showLoading({
+      title: "请稍等"
+    })
+    member.push(openid);
+    dispatch(subscribeRoom(roomid, member))
     setSubscribe(true)
   }
 
@@ -106,4 +123,4 @@ const RoomInfo: React.FC<IProps> = (props) => {
   )
 }
 
-export default RoomInfo
+export default connect(mapStateToProps)(RoomInfo) 
