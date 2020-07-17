@@ -20,7 +20,7 @@ export function getRooms(date: string, page: number) {
         })
         Taro.hideLoading()
         if (res.data.length < 1) {
-          if (page === 0) {
+          if (page === 0 && list.length === 0) {
             Taro.showToast({
               title: "还没有人创建房间哦",
               icon: "none",
