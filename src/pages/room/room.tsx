@@ -1,7 +1,7 @@
 /**
  * @description 创建成功以后的房间信息页面
  */
-import Nerv from "nervjs";
+import Nerv, { useState } from "nervjs";
 import { View, Text } from "@tarojs/components";
 import { AtFab, AtAvatar } from "taro-ui"
 import "./room.scss"
@@ -22,9 +22,10 @@ type ModelState = ConnectedProps<typeof connector>
 
 const Room: React.FC<ModelState> = (props) => {
     const { treeImg, isRoomOwner } = props;
-
+    const [subscribe, setSubscribe] = useState(false)
 
     return (
+
         <View className='room' style='flex-direction:column'>
             {isRoomOwner ?
                 <View className='title'>
@@ -42,11 +43,28 @@ const Room: React.FC<ModelState> = (props) => {
             <View className='share-card-content'>
                 <ShareCard {...props}></ShareCard>
             </View>
-            <View className='share-btn'>
-                <AtFab>
-                    <Text className='at-fab__icon at-icon at-icon-share-2'></Text>
-                </AtFab>
-            </View>
+
+            {isRoomOwner ?
+                <View className='share-btn'>
+                    <AtFab>
+                        <Text className='at-fab__icon at-icon at-icon-share-2'></Text>
+                    </AtFab>
+                </View>
+                :
+                <View className='subscribe-area'>
+                    {subscribe ? (
+                        <AtFab className='active' >
+                            <Text className='at-fab__icon at-icon at-icon-check'></Text>
+                        </AtFab>
+                    ) : (
+                            <AtFab >
+                                <Text className='at-fab__icon at-icon at-icon-bell'></Text>
+                            </AtFab>
+                        )}
+                </View>
+            }
+
+
 
         </View >
     )

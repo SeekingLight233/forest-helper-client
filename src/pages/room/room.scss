@@ -47,4 +47,22 @@
         margin-top: 20vh;
         transform: scale(1.5);
     }
+    .subscribe-area{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        margin-top: 20vh;
+        transform: scale(1.2);
+        .at-fab{
+            width: 140px;
+            height: 140px;
+            margin-top: -30px;
+            margin-left: 10px;
+            box-shadow: none;
+        }
+        .at-icon{
+            font-size: 70px;
+            transform: translateX(-10px) translateY(-10px);
+        }
+    }
 }

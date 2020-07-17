@@ -86,18 +86,11 @@ const Create: React.FC<ModelState> = (props) => {
         treeImg: TREES[treeIndex].URL,
         startTime: time,
         duration: durationCheck,
-        commit
+        commit,
+        isRoomOwner: true
       })
       Taro.navigateTo({ url: "../room/room" })
     })
-
-    // console.log(date);
-    // console.log(time);
-    // console.log(durationCheck)
-    // console.log(treeIndex)
-    // console.log(commit)
-    // console.log(openid)
-    // console.log(nickName)
   }
 
   const reset = () => {

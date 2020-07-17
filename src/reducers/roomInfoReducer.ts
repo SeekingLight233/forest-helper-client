@@ -8,7 +8,7 @@ export interface RoomState {
     startTime: string,
     duration: string,
     commit: string,
-    isRoomOwner?: boolean
+    isRoomOwner?: undefined | boolean
 }
 
 const INITIAL_STATE: RoomState = {
@@ -19,16 +19,16 @@ const INITIAL_STATE: RoomState = {
     startTime: "",
     duration: "",
     commit: "",
-    isRoomOwner: false
+    isRoomOwner: undefined
 }
 
 export default function roomInfo(state = INITIAL_STATE, action): RoomState {
-    const { roomid, nickName, treeSpecies, treeImg, startTime, duration, commit } = action
+    const { roomid, nickName, treeSpecies, treeImg, startTime, duration, commit, isRoomOwner } = action
     switch (action.type) {
         case ROOM_INFO:
             return {
                 ...state,
-                roomid, nickName, treeSpecies, startTime, duration, commit, treeImg
+                roomid, nickName, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner
             }
         default:
             return state

@@ -1,3 +1,3 @@
 module.exports = {
-  'extends': ['taro/nerv']
+  extends: ['taro/nerv'],
 }
