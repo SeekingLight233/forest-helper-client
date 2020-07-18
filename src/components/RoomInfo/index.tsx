@@ -8,13 +8,15 @@ import './RoomInfo.scss'
 import { AtAvatar, AtFab } from 'taro-ui'
 // eslint-disable-next-line import/first
 import Taro from '@tarojs/taro'
-import { ROOM_INFO } from '../../constants/actionTypes'
+import { ROOM_INFO, USER_INFO } from '../../constants/actionTypes'
 import { connect, ConnectedProps } from "nerv-redux";
-import { subscribeRoom } from '../../actions/mainAction'
+import { updateRoom } from '../../actions/mainAction'
+import { store } from "../../store/index"
 
 const mapStateToProps = (state) => ({
   openid: state.userInfo.openid,
-  nickName: state.userInfo.nickName
+  nickName: state.userInfo.nickName,
+  subscribeRoomid: state.userInfo.subscribeRoomid
 })
 
 const connector = connect(mapStateToProps);
@@ -34,15 +36,11 @@ interface IProps {
 }
 
 const RoomInfo: React.FC<IProps & ModelState> = (props) => {
-  const { treeImg, nickName, startTime, duration, commit, roomid, treeSpecies, member, openid, dispatch, _openid } = props
+  const { treeImg, nickName, startTime, duration, commit, roomid, treeSpecies, member, openid, dispatch, _openid, subscribeRoomid } = props
   const isSubscribe = member.includes(openid)
   const [subscribe, setSubscribe] = useState(isSubscribe)
   const [touch, setTouch] = useState(false)
 
-  const handleTouchStart = () => {
-    console.log('start')
-    setTouch(true)
-  }
 
   const navigateToRoom = () => {
     setTouch(false)
@@ -63,16 +61,38 @@ const RoomInfo: React.FC<IProps & ModelState> = (props) => {
   }
 
   const handleSubscribe = (e) => {
-    Taro.showLoading({
-      title: "请稍等"
-    })
-    member.push(openid);
-    dispatch(subscribeRoom(roomid, member))
-    setSubscribe(true)
+    // 订阅拦截 只允许同时订阅一个房间
+    if (subscribeRoomid !== 0) {
+      Taro.showToast({
+        title: '只允许同时订阅一个房间哦',
+        icon: 'none',
+        duration: 2000
+      })
+    } else {
+      dispatch({
+        type: USER_INFO,
+        openid,
+        nickName,
+        subscribeRoomid: roomid
+      })
+      setSubscribe(true)
+      member.push(openid);
+      dispatch(updateRoom(roomid, member))
+    }
   }
 
   const cancelSubscribe = (e) => {
-    setSubscribe(false)
+    Taro.showModal({
+      title: "提示",
+      content: '确认取消订阅吗？',
+      success: function (res) {
+        if (res.confirm) {
+          setSubscribe(false)
+          let newMember = member.filter((val) => val !== openid)
+          dispatch(updateRoom(roomid, newMember, true))
+        }
+      }
+    })
   }
 
   const cls = touch ? 'room-info touch' : 'room-info'

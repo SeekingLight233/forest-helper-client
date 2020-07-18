@@ -10,6 +10,8 @@ import { store } from "../store/index"
 
 const db = wx.cloud.database()
 
+
+
 // @todo 不太确定小程序是否支持async和await，就先这样吧
 export function getRooms(date: string, page: number) {
   return (dispatch, getState) => {
@@ -45,10 +47,17 @@ export function getRooms(date: string, page: number) {
   }
 }
 
-export function subscribeRoom(roomid: number, member: string[]) {
-  console.log(member);
+/**
+ * @description 更新房间状态
+ * @param roomid 房间号 
+ * @param member 更新后的member数组
+ * @param cancelSubscribe 是否取消订阅
+ */
+export function updateRoom(roomid: number, member: string[], cancelSubscribe?: boolean) {
   return (dispatch, getState) => {
-    console.log("I am here!!!");
+    Taro.showLoading({
+      title: "请稍等"
+    })
     db.collection('rooms').where({
       roomid
     }).update({
@@ -56,29 +65,47 @@ export function subscribeRoom(roomid: number, member: string[]) {
         member
       },
       success: function (res) {
+        const userInfoState = store.getState().userInfo;
         Taro.hideLoading()
-        console.log("OK!!!");
-        console.log(res.data)
+
+        if (!cancelSubscribe) {
+          Taro.showToast({
+            title: "订阅成功！",
+            icon: "success"
+          })
+        }
+
+        if (cancelSubscribe) {
+          dispatch({
+            type: USER_INFO,
+            ...userInfoState,
+            subscribeRoomid: 0
+          })
+        }
       }
     })
 
   }
 }
 
+/**
+ * @description 删除房间
+ * @param roomid  要删除的房间号
+ */
 export const deleteRoom = (roomid: number) => {
   db.collection('rooms').where({
     roomid
   }).remove({
     success: function (res) {
+      const rooms = store.getState().getRooms;
       Taro.hideLoading()
-      console.log("delete OK!!!");
+      const list = rooms.list.filter(item => item.roomid !== roomid)
       Taro.navigateBack({
         complete: () => {
-          const state = store.getState().userInfo;
           store.dispatch({
-            type: USER_INFO,
-            ...state,
-            deleteRoomid: roomid
+            type: GET_ROOMS,
+            ...rooms,
+            list
           })
         }
       })
@@ -86,14 +113,3 @@ export const deleteRoom = (roomid: number) => {
   })
 }
 
-// 异步的action
-// export function asyncTest(payload) {
-//   return async (dispatch, getState) => {
-//     setTimeout(() => {
-//       dispatch({
-//         type: USER_INFO,
-//         openid: payload.openid
-//       })
-//     }, 2000)
-//   }
-// }

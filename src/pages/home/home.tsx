@@ -9,7 +9,8 @@ import { saveUserInfo } from "../../utils/common";
 
 const mapStateToProps = (state) => ({
     openid: state.userInfo.openid,
-    nickName: state.userInfo.nickName
+    nickName: state.userInfo.nickName,
+    state: state.userInfo
 })
 
 const connector = connect(mapStateToProps);
@@ -19,7 +20,7 @@ type ModelState = ConnectedProps<typeof connector>
 
 
 const Home: React.FC<ModelState> = (props) => {
-    const { openid, nickName, dispatch } = props
+    const { openid, nickName, dispatch, state } = props
     const storageOpenid = Taro.getStorageSync("openid");
     const storageNickName = Taro.getStorageSync("nickName")
 
@@ -27,7 +28,7 @@ const Home: React.FC<ModelState> = (props) => {
         Taro.showLoading({
             title: '加载中',
         })
-        saveUserInfo({ e, storageOpenid, storageNickName, dispatch })
+        saveUserInfo({ e, storageOpenid, storageNickName, dispatch, state })
         const buttonid = e.target.id
         if (buttonid === "_n_26") {
             Taro.navigateTo({ url: "../create/create" })
