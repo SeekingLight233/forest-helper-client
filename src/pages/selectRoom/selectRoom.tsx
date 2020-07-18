@@ -17,16 +17,16 @@ import { CLEAR_ROOMS } from "../../constants/actionTypes";
 
 const mapStateToProps = (state) => {
     const { list } = state.getRooms;
-    const { deleteRoomid } = state.userInfo;
-    return { list, deleteRoomid }
+    const { deleteRoomid, subscribeRoomid } = state.userInfo;
+    return { list, deleteRoomid, subscribeRoomid }
 }
 
 const connector = connect(mapStateToProps);
 type ModelState = ConnectedProps<typeof connector>
 const SelectRoom: React.FC<ModelState> = (props) => {
     const list: RoomState[] = props.list;
-    const deleteRoomid: number = props.deleteRoomid;
-    const dispatch = props.dispatch;
+    const { deleteRoomid, subscribeRoomid, dispatch } = props
+
 
     const [page, setPage] = useState(0)
     const [date, setDate] = useState(Date.now())
@@ -48,7 +48,7 @@ const SelectRoom: React.FC<ModelState> = (props) => {
                 setPage(0)
             }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [date, deleteRoomid])
+    }, [date, deleteRoomid, subscribeRoomid])
 
 
     /**
