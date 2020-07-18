@@ -1,11 +1,11 @@
 /* eslint-disable import/first */
 import Nerv, { useState } from "nervjs";
 import { View, Button } from "@tarojs/components";
-import { AtCard, AtIcon, AtActionSheet, AtActionSheetItem } from "taro-ui"
+import { AtCard, AtIcon, AtActionSheet, AtActionSheetItem, AtButton } from "taro-ui"
 import "./ShareCard.scss"
 import Taro from '@tarojs/taro'
 import { RoomState } from "../../reducers/roomInfoReducer";
-import { deleteRoom } from '../../actions/mainAction';
+import { deleteRoom } from '../../actions/database';
 
 
 interface IProps {
@@ -13,7 +13,7 @@ interface IProps {
 }
 
 const ShareCard: React.FC<RoomState & IProps> = (props) => {
-    const { nickName, treeSpecies, startTime, duration, commit, roomOwner, roomid } = props
+    const { host, treeSpecies, startTime, duration, commit, roomOwner, roomid } = props
     const onDeleteRoom = () => {
         Taro.showActionSheet({
             itemList: ["确认"],
@@ -31,10 +31,14 @@ const ShareCard: React.FC<RoomState & IProps> = (props) => {
         })
 
     }
+
+    const onShareRoom = () => {
+        console.log("share btn");
+    }
     return (
         <View className='share-card' style='flex-direction:column'>
             <View className='share-item'>
-                <AtCard extra={nickName} title='房主' renderIcon={<AtIcon value='home' size={15} color='#2C405A'></AtIcon>}>
+                <AtCard extra={host} title='房主' renderIcon={<AtIcon value='home' size={15} color='#2C405A'></AtIcon>}>
                 </AtCard>
             </View>
 
@@ -59,6 +63,7 @@ const ShareCard: React.FC<RoomState & IProps> = (props) => {
 
             {roomOwner ? <View className='delete-area'>
                 <Button type='warn' onClick={onDeleteRoom}>删除房间</Button>
+                <Button type='primary' onClick={onShareRoom}>分享</Button>
             </View> : null}
         </View>
     )

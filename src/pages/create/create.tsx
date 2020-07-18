@@ -73,7 +73,7 @@ const Create: React.FC<ModelState> = (props) => {
         treeSpecies: TREES[treeIndex].NAME,
         commit: commit,
         openid: openid,
-        nickName: nickName,
+        host: nickName,
         member: [],
         roomid
       }
@@ -86,7 +86,7 @@ const Create: React.FC<ModelState> = (props) => {
       dispatch({
         type: ROOM_INFO,
         roomid,
-        nickName: nickName,
+        host: nickName,
         treeSpecies: treeCheck,
         treeImg: TREES[treeIndex].URL,
         startTime: time,

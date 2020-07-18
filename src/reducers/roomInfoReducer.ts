@@ -3,7 +3,7 @@ import { ROOM_INFO } from '../constants/actionTypes'
 export interface RoomState {
     _openid: string,
     roomid: number,
-    nickName: string,
+    host: string,
     treeSpecies: string,
     treeImg: string,
     startTime: string,
@@ -16,7 +16,7 @@ export interface RoomState {
 const INITIAL_STATE: RoomState = {
     _openid: "",
     roomid: 0,
-    nickName: "",
+    host: "",
     treeSpecies: "",
     treeImg: "",
     startTime: "",
@@ -27,12 +27,12 @@ const INITIAL_STATE: RoomState = {
 }
 
 export default function roomInfo(state = INITIAL_STATE, action): RoomState {
-    const { roomid, nickName, treeSpecies, treeImg, startTime, duration, commit, isRoomOwner, member, _openid } = action
+    const { roomid, host, treeSpecies, treeImg, startTime, duration, commit, isRoomOwner, member, _openid } = action
     switch (action.type) {
         case ROOM_INFO:
             return {
                 ...state,
-                roomid, nickName, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, _openid
+                roomid, host, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, _openid
             }
         default:
             return state

@@ -3,7 +3,7 @@
  */
 import Nerv, { useState, useEffect } from "nervjs";
 import { View, Text, Button } from "@tarojs/components";
-import { AtFab, AtAvatar } from "taro-ui"
+import { AtFab, AtAvatar, AtButton } from "taro-ui"
 import "./room.scss"
 import ShareCard from "../../components/ShareCard";
 
@@ -11,9 +11,9 @@ import ShareCard from "../../components/ShareCard";
 import { connect, ConnectedProps } from "nerv-redux";
 
 const mapStateToProps = (state) => {
-    const { roomid, nickName, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, _openid } = state.roomInfo;
+    const { roomid, host, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, _openid } = state.roomInfo;
     const { openid } = state.userInfo
-    return { roomid, nickName, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, openid, _openid }
+    return { roomid, host, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, openid, _openid }
 }
 
 const connector = connect(mapStateToProps);
@@ -35,6 +35,8 @@ const Room: React.FC<ModelState> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+
+
     return (
 
         <View className='room' style='flex-direction:column'>
@@ -53,9 +55,7 @@ const Room: React.FC<ModelState> = (props) => {
 
             {roomOwner ?
                 <View className='share-btn'>
-                    <AtFab>
-                        <Text className='at-fab__icon at-icon at-icon-share-2'></Text>
-                    </AtFab>
+
                 </View>
                 :
                 <View className='subscribe-area'>

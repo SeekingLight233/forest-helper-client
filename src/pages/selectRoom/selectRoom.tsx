@@ -6,7 +6,7 @@ import Nerv, { useEffect, useState } from "nervjs";
 import { View } from "@tarojs/components";
 import "./selectRoom.scss"
 import DatePagination from "../../components/DatePagination";
-import { getRooms } from "../../actions/mainAction";
+import { getRooms } from "../../actions/database";
 import Taro, { useReachBottom } from "@tarojs/taro"
 import { connect, ConnectedProps } from "nerv-redux";
 import { RoomState } from "../../reducers/roomInfoReducer";
@@ -39,7 +39,6 @@ const SelectRoom: React.FC<ModelState> = (props) => {
      * @description 请求首屏数据
      */
     useEffect(() => {
-        console.log(deleteRoomid);
 
         fetchData()
         if (list.length <= 5)
@@ -65,9 +64,8 @@ const SelectRoom: React.FC<ModelState> = (props) => {
 
     const renderRooms = () => {
         return list.map((item, index) => {
-            const { treeImg, nickName, startTime, duration, commit, roomid, treeSpecies, member, _openid } = item
-
-            return <RoomInfo _openid={_openid} key={item.roomid} roomid={roomid} member={member} treeSpecies={treeSpecies} treeImg={treeImg} nickName={nickName} startTime={getTime(startTime as any)} duration={duration} commit={commit}></RoomInfo>
+            const { treeImg, host, startTime, duration, commit, roomid, treeSpecies, member, _openid } = item
+            return <RoomInfo _openid={_openid} key={item.roomid} roomid={roomid} member={member} treeSpecies={treeSpecies} treeImg={treeImg} host={host} startTime={getTime(startTime as any)} duration={duration} commit={commit}></RoomInfo>
         })
     }
 

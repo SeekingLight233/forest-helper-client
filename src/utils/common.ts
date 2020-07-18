@@ -39,11 +39,3 @@ export const saveUserInfo = ({ e, storageOpenid, storageNickName, dispatch, stat
     }
 }
 
-
-export const handleSubscribe = (e) => {
-    // setSubscribe(true)
-}
-
-export const cancelSubscribe = (e) => {
-    // setSubscribe(false)
-}

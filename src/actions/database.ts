@@ -11,7 +11,6 @@ import { store } from "../store/index"
 const db = wx.cloud.database()
 
 
-
 // @todo 不太确定小程序是否支持async和await，就先这样吧
 export function getRooms(date: string, page: number) {
   return (dispatch, getState) => {
@@ -23,6 +22,7 @@ export function getRooms(date: string, page: number) {
       date
     }).get({
       success: function (res) {
+        console.log(res);
         dispatch({
           type: GET_ROOMS,
           list: list.concat(res.data)
@@ -53,38 +53,39 @@ export function getRooms(date: string, page: number) {
  * @param member 更新后的member数组
  * @param cancelSubscribe 是否取消订阅
  */
-export function updateRoom(roomid: number, member: string[], cancelSubscribe?: boolean) {
+export function updateRoom(roomid: number, member: string[], cancelSubscribe?: boolean): any {
   return (dispatch, getState) => {
     Taro.showLoading({
       title: "请稍等"
     })
-    db.collection('rooms').where({
-      roomid
-    }).update({
+    console.log(roomid);
+    console.log(member);
+    wx.cloud.callFunction({
+      name: 'subscribe',
       data: {
+        roomid,
         member
-      },
-      success: function (res) {
-        const userInfoState = store.getState().userInfo;
-        Taro.hideLoading()
+      }
+    }).then(() => {
+      console.log("subscribe ok!!!");
+      const userInfoState = store.getState().userInfo;
+      Taro.hideLoading()
 
-        if (!cancelSubscribe) {
-          Taro.showToast({
-            title: "订阅成功！",
-            icon: "success"
-          })
-        }
+      if (!cancelSubscribe) {
+        Taro.showToast({
+          title: "订阅成功！",
+          icon: "success"
+        })
+      }
 
-        if (cancelSubscribe) {
-          dispatch({
-            type: USER_INFO,
-            ...userInfoState,
-            subscribeRoomid: 0
-          })
-        }
+      if (cancelSubscribe) {
+        dispatch({
+          type: USER_INFO,
+          ...userInfoState,
+          subscribeRoomid: 0
+        })
       }
     })
-
   }
 }
 
@@ -112,4 +113,5 @@ export const deleteRoom = (roomid: number) => {
     }
   })
 }
+
 
