@@ -8,10 +8,7 @@ import './RoomInfo.scss'
 import { AtAvatar, AtFab } from 'taro-ui'
 // eslint-disable-next-line import/first
 import Taro from '@tarojs/taro'
-import { ROOM_INFO, USER_INFO } from '../../constants/actionTypes'
 import { connect, ConnectedProps } from "nerv-redux";
-import { updateRoom } from '../../actions/database'
-import { store } from "../../store/index"
 import { updateSubscribeState, updateRoomInfoState } from '../../actions/updateState'
 import { handleSubscribe, cancelSubscribe } from '../../actions/controller'
 
@@ -39,7 +36,6 @@ interface IProps {
 
 const RoomInfo: React.FC<IProps & ModelState> = (props) => {
   const { host, treeImg, nickName, startTime, duration, commit, roomid, treeSpecies, member, openid, dispatch, _openid, subscribeRoomid } = props
-
   const [subscribe, setSubscribe] = useState(false)
   const [touch, setTouch] = useState(false)
 
@@ -55,6 +51,16 @@ const RoomInfo: React.FC<IProps & ModelState> = (props) => {
     setSubscribe(isSubscribe)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // 监听订阅状态
+  useEffect(() => {
+    // if (subscribeRoomid === 0) {
+    //   setSubscribe(false)
+    // }
+    // if (subscribeRoomid && subscribeRoomid !== 0) {
+    //   setSubscribe(true)
+    // }
+  }, [subscribeRoomid])
 
   const navigateToRoom = () => {
     setTouch(false)
@@ -74,6 +80,13 @@ const RoomInfo: React.FC<IProps & ModelState> = (props) => {
 
 
   const onSubscribe = () => {
+    if (!Taro.getStorageSync('init')) {
+      Taro.showToast({
+        title: "稍等，第一次进入需要初始化",
+        icon: "none"
+      })
+      return
+    }
     handleSubscribe({
       nickName,
       host,
@@ -90,7 +103,8 @@ const RoomInfo: React.FC<IProps & ModelState> = (props) => {
       member,
       openid,
       roomid,
-      _setSubscribe
+      _setSubscribe,
+      nickName
     })
   }
 

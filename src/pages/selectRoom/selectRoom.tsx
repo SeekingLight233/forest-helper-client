@@ -7,7 +7,7 @@ import { View } from "@tarojs/components";
 import "./selectRoom.scss"
 import DatePagination from "../../components/DatePagination";
 import { getRooms } from "../../actions/database";
-import Taro, { useReachBottom } from "@tarojs/taro"
+import Taro, { useReachBottom, useDidShow, useReady } from "@tarojs/taro"
 import { connect, ConnectedProps } from "nerv-redux";
 import { RoomState } from "../../reducers/roomInfoReducer";
 import RoomInfo from "../../components/RoomInfo";
@@ -26,8 +26,6 @@ type ModelState = ConnectedProps<typeof connector>
 const SelectRoom: React.FC<ModelState> = (props) => {
     const list: RoomState[] = props.list;
     const { deleteRoomid, subscribeRoomid, dispatch } = props
-
-
     const [page, setPage] = useState(0)
     const [date, setDate] = useState(Date.now())
 
@@ -39,17 +37,33 @@ const SelectRoom: React.FC<ModelState> = (props) => {
      * @description 请求首屏数据
      */
     useEffect(() => {
-
         fetchData()
-        if (list.length <= 5)
-            // 销毁组件清空状态
-            return () => {
-                dispatch({ type: CLEAR_ROOMS })
-                setPage(0)
-            }
+        // 销毁组件清空状态
+        return () => {
+            dispatch({ type: CLEAR_ROOMS })
+            setPage(0)
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [date, deleteRoomid, subscribeRoomid])
+    }, [date, deleteRoomid])
 
+    useReady(() => {
+        if (!Taro.getStorageSync('init')) {
+            setTimeout(() => {
+                Taro.showToast({
+                    title: '初始化完成',
+                    icon: 'success',
+                })
+                Taro.setStorageSync('init', true)
+            }, 3000)
+        }
+    })
+
+
+    useDidShow(() => {
+        dispatch({ type: CLEAR_ROOMS })
+        setPage(0)
+        fetchData()
+    })
 
     /**
      * @description 触底加载下一页

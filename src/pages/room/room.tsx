@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 /**
  * @description 创建成功以后的房间信息页面
  */
@@ -6,11 +7,10 @@ import { View, Text, Button } from "@tarojs/components";
 import { AtFab, AtAvatar, AtButton } from "taro-ui"
 import "./room.scss"
 import ShareCard from "../../components/ShareCard";
-
-// eslint-disable-next-line import/first
 import { connect, ConnectedProps } from "nerv-redux";
 import { updateSubscribeState } from '../../actions/updateState';
 import { handleSubscribe, cancelSubscribe } from '../../actions/controller';
+import { useShareAppMessage } from '@tarojs/taro';
 
 const mapStateToProps = (state) => {
     const { roomid, host, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, _openid } = state.roomInfo;
@@ -33,7 +33,7 @@ const Room: React.FC<ModelState> = (props) => {
     }
 
     useEffect(() => {
-        const isSubscribe = member.includes(openid)
+        const isSubscribe = subscribeRoomid !== 0;
         if (isSubscribe) {
             updateSubscribeState(openid, nickName, roomid)
         }
@@ -43,6 +43,16 @@ const Room: React.FC<ModelState> = (props) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useShareAppMessage(res => {
+        if (res.from === 'button') {
+            console.log(res.target)
+        }
+        return {
+            title: 'test',
+            path: '/page/room'
+        }
+    })
 
     const onCancelSubscribe = () => {
         handleSubscribe({
@@ -61,7 +71,8 @@ const Room: React.FC<ModelState> = (props) => {
             member,
             openid,
             roomid,
-            _setSubscribe
+            _setSubscribe,
+            nickName
         })
     }
 

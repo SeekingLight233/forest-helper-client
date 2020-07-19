@@ -30,12 +30,13 @@ export const handleSubscribe = ({ nickName, host, subscribeRoomid, openid, roomi
     }
 }
 
-export const cancelSubscribe = ({ _setSubscribe, member, openid, roomid }) => {
+export const cancelSubscribe = ({ _setSubscribe, member, openid, roomid, nickName }) => {
     Taro.showModal({
         title: "提示",
         content: '确认取消订阅吗？',
         success: function (res) {
             if (res.confirm) {
+                updateSubscribeState(openid, nickName, 0)
                 _setSubscribe(false)
                 let newMember = member.filter((val) => val !== openid)
                 dispatch(updateRoom(roomid, newMember, true))

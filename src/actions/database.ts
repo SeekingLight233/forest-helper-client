@@ -79,6 +79,10 @@ export function updateRoom(roomid: number, member: string[], cancelSubscribe?: b
       }
 
       if (cancelSubscribe) {
+        Taro.showToast({
+          title: "取消订阅",
+          icon: "none"
+        })
         dispatch({
           type: USER_INFO,
           ...userInfoState,

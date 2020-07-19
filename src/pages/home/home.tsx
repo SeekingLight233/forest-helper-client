@@ -1,4 +1,4 @@
-import Nerv from "nervjs";
+import Nerv, { useEffect } from "nervjs";
 import { View } from "@tarojs/components";
 import Taro from "@tarojs/taro"
 import { AtButton, AtAvatar } from "taro-ui"
@@ -23,6 +23,7 @@ const Home: React.FC<ModelState> = (props) => {
     const { openid, nickName, dispatch, state } = props
     const storageOpenid = Taro.getStorageSync("openid");
     const storageNickName = Taro.getStorageSync("nickName")
+
 
     const handleUserInfo = (e) => {
         Taro.showLoading({
