@@ -1,3 +1,4 @@
+/* eslint-disable import/no-duplicates */
 /* eslint-disable import/first */
 /**
  * @description 创建成功以后的房间信息页面
@@ -9,13 +10,16 @@ import "./room.scss"
 import ShareCard from "../../components/ShareCard";
 import { connect, ConnectedProps } from "nerv-redux";
 import { updateSubscribeState } from '../../actions/updateState';
-import { handleSubscribe, cancelSubscribe } from '../../actions/controller';
+import { handleSubscribe, cancelSubscribe, setUserState } from '../../actions/controller';
 import { useShareAppMessage } from '@tarojs/taro';
+import Taro from '@tarojs/taro'
+import { queryRoomById } from '../../actions/database';
+import { set as setGlobalData, get as getGlobalData } from "../../store/global_data"
 
 const mapStateToProps = (state) => {
     const { roomid, host, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, _openid } = state.roomInfo;
     const { openid, nickName, subscribeRoomid } = state.userInfo
-    return { roomid, host, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, openid, _openid, subscribeRoomid }
+    return { nickName, roomid, host, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, openid, _openid, subscribeRoomid }
 }
 
 const connector = connect(mapStateToProps);
@@ -24,23 +28,50 @@ type ModelState = ConnectedProps<typeof connector>
 
 
 const Room: React.FC<ModelState> = (props) => {
-    const { treeImg, isRoomOwner, member, openid, _openid, roomid, nickName, host, subscribeRoomid } = props;
+    const { duration, treeImg, isRoomOwner, member, openid, _openid, roomid, nickName, host, subscribeRoomid, startTime, treeSpecies } = props;
     const [roomOwner, setRoomOwner] = useState(isRoomOwner)
     const [subscribe, setSubscribe] = useState(false)
+    const [share, setShare] = useState(false)
 
     const _setSubscribe = (state: boolean) => {
         setSubscribe(state)
     }
 
     useEffect(() => {
+        // 分享进入时的入口参数
+        const shareid = wx.getEnterOptionsSync().query.shareid;
+        if (shareid && !getGlobalData("entryByShare")) {
+            const sharer = wx.getEnterOptionsSync().query.sharer;
+            setUserState()
+            // const userid = getUserId()
+            // 允许分享者通过卡片删除
+            if (sharer === openid) { // At this time, the openid here is for the visitor
+                setRoomOwner(true)
+            }
+            Taro.showToast({
+                title: `sharer=${sharer}`,
+                duration: 5000
+            })
+            queryRoomById(Number(shareid))
+        }
+
         const isSubscribe = subscribeRoomid !== 0;
+
         if (isSubscribe) {
             updateSubscribeState(openid, nickName, roomid)
         }
+
         setSubscribe(isSubscribe)
         if (openid === _openid) {
             setRoomOwner(true)
         }
+
+        return () => {
+            if (shareid) {
+                setGlobalData("entryByShare", true)
+            }
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -49,8 +80,9 @@ const Room: React.FC<ModelState> = (props) => {
             console.log(res.target)
         }
         return {
-            title: 'test',
-            path: '/page/room'
+            title: `我将在 ${startTime} 种下一颗"${treeSpecies}",时长是${duration},快来订阅吧！`,
+            path: `/pages/room/room?shareid=${roomid}&sharer=${openid}`,
+            imageUrl: treeImg
         }
     })
 
@@ -92,12 +124,12 @@ const Room: React.FC<ModelState> = (props) => {
 
             {roomOwner ?
                 <View className='share-btn'>
-
                 </View>
                 :
                 <View className='subscribe-area'>
                     {subscribe ? (
-                        <AtFab className='active' onClick={onSubscribe}>
+
+                        <AtFab className='active' onClick={onSubscribe} >
                             <Text className='at-fab__icon at-icon at-icon-check'></Text>
                         </AtFab>
                     ) : (

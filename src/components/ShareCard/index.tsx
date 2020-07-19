@@ -63,7 +63,7 @@ const ShareCard: React.FC<RoomState & IProps> = (props) => {
 
             {roomOwner ? <View className='delete-area'>
                 <Button type='warn' onClick={onDeleteRoom}>删除房间</Button>
-                <Button type='primary' onClick={onShareRoom}>分享</Button>
+                <Button type='primary' openType='share' onClick={onShareRoom}>分享</Button>
             </View> : null}
         </View>
     )

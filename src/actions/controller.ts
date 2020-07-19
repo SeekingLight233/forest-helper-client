@@ -3,6 +3,7 @@ import { store } from "../store/index"
 import { updateSubscribeState } from './updateState'
 import { updateRoom } from './database'
 import Taro from '@tarojs/taro'
+import { USER_INFO } from '../constants/actionTypes'
 
 const { dispatch } = store
 
@@ -42,5 +43,19 @@ export const cancelSubscribe = ({ _setSubscribe, member, openid, roomid, nickNam
                 dispatch(updateRoom(roomid, newMember, true))
             }
         }
+    })
+}
+
+export const setUserState = () => {
+    wx.cloud.callFunction({
+        name: 'login',
+    }).then((res) => {
+        const openid = res.result.openid
+        const userState = store.getState().userInfo;
+        dispatch({
+            type: USER_INFO,
+            ...userState,
+            openid
+        })
     })
 }

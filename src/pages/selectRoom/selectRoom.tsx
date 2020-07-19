@@ -2,18 +2,17 @@
 /**
  *@description 选择房间页面
  */
-import Nerv, { useEffect, useState } from "nervjs";
+import Nerv, { useEffect, useState, useRef } from "nervjs";
 import { View } from "@tarojs/components";
 import "./selectRoom.scss"
 import DatePagination from "../../components/DatePagination";
 import { getRooms } from "../../actions/database";
-import Taro, { useReachBottom, useDidShow, useReady } from "@tarojs/taro"
+import Taro, { useReachBottom, useDidShow, useReady, usePullDownRefresh } from "@tarojs/taro"
 import { connect, ConnectedProps } from "nerv-redux";
 import { RoomState } from "../../reducers/roomInfoReducer";
 import RoomInfo from "../../components/RoomInfo";
 import { getTime, getChineseDate } from "../../utils/date";
 import { CLEAR_ROOMS } from "../../constants/actionTypes";
-
 
 const mapStateToProps = (state) => {
     const { list } = state.getRooms;
@@ -26,22 +25,31 @@ type ModelState = ConnectedProps<typeof connector>
 const SelectRoom: React.FC<ModelState> = (props) => {
     const list: RoomState[] = props.list;
     const { deleteRoomid, subscribeRoomid, dispatch } = props
-    const [page, setPage] = useState(0)
+    // const [page, setPage] = useState(0)
+    const page = useRef(0)
+
     const [date, setDate] = useState(Date.now())
 
     const fetchData = () => {
         const resolveDate = getChineseDate(date)
-        dispatch(getRooms(resolveDate, page))
+        dispatch(getRooms(resolveDate, page.current))
+    }
+
+    const refresh = () => {
+        dispatch({ type: CLEAR_ROOMS })
+        page.current = 0;
+        fetchData()
     }
     /**
      * @description 请求首屏数据
      */
     useEffect(() => {
+        console.log(page);
         fetchData()
         // 销毁组件清空状态
         return () => {
             dispatch({ type: CLEAR_ROOMS })
-            setPage(0)
+            page.current = 0;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [date, deleteRoomid])
@@ -60,20 +68,25 @@ const SelectRoom: React.FC<ModelState> = (props) => {
 
 
     useDidShow(() => {
-        dispatch({ type: CLEAR_ROOMS })
-        setPage(0)
-        fetchData()
+        refresh()
     })
 
     /**
      * @description 触底加载下一页
      */
     useReachBottom(() => {
-        setPage(val => val + 1)
+        page.current++;
         Taro.showLoading({
             title: '加载中',
         })
-        dispatch(getRooms(date, page))
+        dispatch(getRooms(date, page.current))
+    })
+
+    /**
+     * @description 下拉刷新
+     */
+    usePullDownRefresh(() => {
+        refresh()
     })
 
     const renderRooms = () => {
@@ -88,7 +101,8 @@ const SelectRoom: React.FC<ModelState> = (props) => {
      */
     const changeDate = (newDate) => {
         setDate(newDate)
-        setPage(0)
+        page.current = 0;
+        // setPage(0)
     }
     return (
         <View className='select-room' style='flex-direction:column'>

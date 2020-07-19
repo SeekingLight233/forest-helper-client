@@ -1,12 +1,14 @@
 import {
   GET_ROOMS,
   SUBSCRIBE_ROOM,
-  USER_INFO
+  USER_INFO,
+  ROOM_INFO
 } from '../constants/actionTypes'
 // eslint-disable-next-line import/first
 import Taro from "@tarojs/taro"
 import { MAX_PAGE_LENGTH } from '../constants/common'
 import { store } from "../store/index"
+import { resolveTime, getTime } from '../utils/date'
 
 const db = wx.cloud.database()
 
@@ -45,6 +47,28 @@ export function getRooms(date: string, page: number) {
       }
     })
   }
+}
+
+/**
+ * @description 根据房间号查询
+ */
+export function queryRoomById(roomid: number) {
+  db.collection('rooms').where({
+    roomid
+  }).get({
+    success: function (res) {
+      const roomInfo = res.data[0]
+      let startTime = roomInfo.startTime;
+      startTime = getTime(startTime);
+      const roomState = store.getState().roomInfo;
+      store.dispatch({
+        type: ROOM_INFO,
+        ...roomState,
+        ...roomInfo,
+        startTime
+      })
+    }
+  })
 }
 
 /**
