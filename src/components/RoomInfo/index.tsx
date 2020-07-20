@@ -44,7 +44,7 @@ const RoomInfo: React.FC<IProps & ModelState> = (props) => {
   }
 
   useEffect(() => {
-    const isSubscribe = member.includes(openid)
+    const isSubscribe = subscribeRoomid === roomid
     if (isSubscribe) {
       updateSubscribeState(openid, nickName, roomid)
     }
@@ -52,15 +52,6 @@ const RoomInfo: React.FC<IProps & ModelState> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // 监听订阅状态
-  useEffect(() => {
-    // if (subscribeRoomid === 0) {
-    //   setSubscribe(false)
-    // }
-    // if (subscribeRoomid && subscribeRoomid !== 0) {
-    //   setSubscribe(true)
-    // }
-  }, [subscribeRoomid])
 
   const navigateToRoom = () => {
     setTouch(false)
@@ -75,7 +66,7 @@ const RoomInfo: React.FC<IProps & ModelState> = (props) => {
       __treeSpecies: treeSpecies,
       __member: member
     })
-    Taro.navigateTo({ url: '../room/room' })
+    Taro.navigateTo({ url: '../room/room?select_room=1' })
   }
 
 

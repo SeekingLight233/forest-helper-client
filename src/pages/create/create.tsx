@@ -78,6 +78,8 @@ const Create: React.FC<ModelState> = (props) => {
         roomid
       }
     }).then(() => {
+
+
       Taro.showToast({
         title: '房间信息发布成功!',
         icon: 'success',

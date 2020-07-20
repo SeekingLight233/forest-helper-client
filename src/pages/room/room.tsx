@@ -10,16 +10,18 @@ import "./room.scss"
 import ShareCard from "../../components/ShareCard";
 import { connect, ConnectedProps } from "nerv-redux";
 import { updateSubscribeState } from '../../actions/updateState';
-import { handleSubscribe, cancelSubscribe, setUserState } from '../../actions/controller';
+import { handleSubscribe, cancelSubscribe, updateUserState } from '../../actions/controller';
 import { useShareAppMessage } from '@tarojs/taro';
-import Taro from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import { queryRoomById } from '../../actions/database';
 import { set as setGlobalData, get as getGlobalData } from "../../store/global_data"
 
 const mapStateToProps = (state) => {
     const { roomid, host, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, _openid } = state.roomInfo;
-    const { openid, nickName, subscribeRoomid } = state.userInfo
-    return { nickName, roomid, host, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, openid, _openid, subscribeRoomid }
+    const { openid, nickName, subscribeRoomid, createdRoomid } = state.userInfo
+    return {
+        createdRoomid, nickName, roomid, host, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, openid, _openid, subscribeRoomid
+    }
 }
 
 const connector = connect(mapStateToProps);
@@ -28,49 +30,47 @@ type ModelState = ConnectedProps<typeof connector>
 
 
 const Room: React.FC<ModelState> = (props) => {
-    const { duration, treeImg, isRoomOwner, member, openid, _openid, roomid, nickName, host, subscribeRoomid, startTime, treeSpecies } = props;
-    const [roomOwner, setRoomOwner] = useState(isRoomOwner)
+    const { createdRoomid, duration, treeImg, isRoomOwner, member, openid, _openid, roomid, nickName, host, subscribeRoomid, startTime, treeSpecies } = props;
+    const [roomOwner, setRoomOwner] = useState(_openid == openid)
     const [subscribe, setSubscribe] = useState(false)
     const [share, setShare] = useState(false)
+    const router = useRouter()
 
     const _setSubscribe = (state: boolean) => {
         setSubscribe(state)
     }
 
-    useEffect(() => {
+
+
+    useEffect(async () => {
         // 分享进入时的入口参数
         const shareid = wx.getEnterOptionsSync().query.shareid;
-        if (shareid && !getGlobalData("entryByShare")) {
+        if (shareid && !router.params.select_room) {
             const sharer = wx.getEnterOptionsSync().query.sharer;
-            setUserState()
+            const info: any = await updateUserState()
             // 允许分享者通过卡片删除
-            if (sharer === openid) { // At this time, the openid here is for the visitor
+            if (sharer == info.openid) { // At this time, the openid here is for the visitor
                 setRoomOwner(true)
             }
-            Taro.showToast({
-                title: `sharer=${sharer}`,
-                duration: 5000
-            })
+
+            if (shareid == info.subscribeRoomid) {
+                setSubscribe(true)
+            }
             queryRoomById(Number(shareid))
-        }
+        } else {
+            // 判断该房间是否为已订阅的状态
+            const isSubscribe = subscribeRoomid === roomid;
+            if (isSubscribe) {
+                updateSubscribeState(openid, nickName, roomid)
+            }
+            setSubscribe(isSubscribe)
+            if (roomid === createdRoomid) {
+                setRoomOwner(true)
+            }
+            return () => {
 
-        // 判断该房间是否为已订阅的状态
-        const isSubscribe = subscribeRoomid === roomid;
-        if (isSubscribe) {
-            updateSubscribeState(openid, nickName, roomid)
-        }
-        setSubscribe(isSubscribe)
-
-        if (openid === _openid) {
-            setRoomOwner(true)
-        }
-
-        return () => {
-            if (shareid) {
-                setGlobalData("entryByShare", true)
             }
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

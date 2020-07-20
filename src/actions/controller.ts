@@ -45,17 +45,26 @@ export const cancelSubscribe = ({ _setSubscribe, member, openid, roomid, nickNam
         }
     })
 }
-
-export const setUserState = () => {
-    wx.cloud.callFunction({
-        name: 'login',
-    }).then((res) => {
-        const openid = res.result.openid
+/**
+ * @description Share page: Update user status
+ */
+export const updateUserState = async () => {
+    return new Promise(async (resolve, reject) => {
+        let res = await wx.cloud.callFunction({
+            name: 'login',
+        })
+        console.log("login success");
+        console.log(res.result.result);
+        const { subscribeRoomid, createdRoomid, openid } = res.result.result
         const userState = store.getState().userInfo;
         dispatch({
             type: USER_INFO,
             ...userState,
+            subscribeRoomid,
+            createdRoomid,
             openid
         })
+        resolve(res.result.result)
     })
+
 }

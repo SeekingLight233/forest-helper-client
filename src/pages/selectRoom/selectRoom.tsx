@@ -52,7 +52,7 @@ const SelectRoom: React.FC<ModelState> = (props) => {
             page.current = 0;
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [date, deleteRoomid])
+    }, [date, deleteRoomid, subscribeRoomid])
 
     useReady(() => {
         if (!Taro.getStorageSync('init')) {
@@ -67,9 +67,9 @@ const SelectRoom: React.FC<ModelState> = (props) => {
     })
 
 
-    useDidShow(() => {
-        refresh()
-    })
+    // useDidShow(() => {
+    //     refresh()
+    // })
 
     /**
      * @description 触底加载下一页
