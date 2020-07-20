@@ -13,7 +13,6 @@ import { resolveTime, getTime } from '../utils/date'
 const db = wx.cloud.database()
 
 
-// @todo 不太确定小程序是否支持async和await，就先这样吧
 export function getRooms(date: string, page: number) {
   return (dispatch, getState) => {
     const list: Array<any> = getState().getRooms.list
@@ -88,13 +87,13 @@ export function updateRoom(roomid: number, member: string[], cancelSubscribe?: b
       name: 'subscribe',
       data: {
         roomid,
-        member
+        member,
+        cancelSubscribe
       }
     }).then(() => {
       console.log("subscribe ok!!!");
       const userInfoState = store.getState().userInfo;
       Taro.hideLoading()
-
       if (!cancelSubscribe) {
         Taro.showToast({
           title: "订阅成功！",

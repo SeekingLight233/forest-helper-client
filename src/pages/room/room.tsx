@@ -43,7 +43,6 @@ const Room: React.FC<ModelState> = (props) => {
         if (shareid && !getGlobalData("entryByShare")) {
             const sharer = wx.getEnterOptionsSync().query.sharer;
             setUserState()
-            // const userid = getUserId()
             // 允许分享者通过卡片删除
             if (sharer === openid) { // At this time, the openid here is for the visitor
                 setRoomOwner(true)
@@ -55,13 +54,13 @@ const Room: React.FC<ModelState> = (props) => {
             queryRoomById(Number(shareid))
         }
 
-        const isSubscribe = subscribeRoomid !== 0;
-
+        // 判断该房间是否为已订阅的状态
+        const isSubscribe = subscribeRoomid === roomid;
         if (isSubscribe) {
             updateSubscribeState(openid, nickName, roomid)
         }
-
         setSubscribe(isSubscribe)
+
         if (openid === _openid) {
             setRoomOwner(true)
         }
