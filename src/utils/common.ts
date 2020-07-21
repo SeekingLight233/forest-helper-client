@@ -13,7 +13,7 @@ export const saveUserInfo = ({ e, storageOpenid, storageNickName, dispatch, stat
             console.log("login success");
             console.log(res)
             const data = JSON.parse(e.detail.rawData)
-            const { subscribeRoomid, createdRoomid, openid } = res.result
+            const { subscribeRoomid, createdRoomid, openid } = res.result.result
             dispatch({
                 type: USER_INFO,
                 nickName: data.nickName,

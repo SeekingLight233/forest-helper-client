@@ -6,7 +6,7 @@ import Taro from "@tarojs/taro"
 import Nerv, { useState, useMemo, useShareAppMessage, useRef } from "nervjs";
 import { View, Picker, Text } from "@tarojs/components";
 import { AtButton, AtInput, AtList, AtListItem } from "taro-ui";
-import { DURATIONS, WAIT_DURATIONS } from "../../constants/common"
+import { DURATIONS, WAIT_DURATIONS, HOST_TEMP_ID } from "../../constants/common"
 import { TREES } from "../../constants/treeData"
 import "./create.scss";
 import { getDate, getTime, resolveTime, generateRoomID, resolveDateToZh } from "../../utils/date";
@@ -62,41 +62,54 @@ const Create: React.FC<ModelState> = (props) => {
    * @todo 这个地方先这样吧，参数太多逻辑抽出来反而会更乱
    */
   const submit = () => {
-    const db = wx.cloud.database();
-    db.collection('rooms').add({
-      data: {
-        startTime: resolveTime(date, time),
-        date: resolveDateToZh(date),
-        waitDuration: waitDuration,
-        duration: durationCheck,
-        treeImg: TREES[treeIndex].URL,
-        treeSpecies: TREES[treeIndex].NAME,
-        commit: commit,
-        openid: openid,
-        host: nickName,
-        member: [],
-        roomid
+    // 请求消息鉴权
+    Taro.requestSubscribeMessage({
+      tmplIds: [HOST_TEMP_ID],
+      success: function (res) {
+        if (res[HOST_TEMP_ID] === "accept") {
+          const db = wx.cloud.database();
+          db.collection('rooms').add({
+            data: {
+              startTime: resolveTime(date, time),
+              date: resolveDateToZh(date),
+              waitDuration: waitDuration,
+              duration: durationCheck,
+              treeImg: TREES[treeIndex].URL,
+              treeSpecies: TREES[treeIndex].NAME,
+              commit: commit,
+              openid: openid,
+              host: nickName,
+              member: [],
+              roomid
+            }
+          }).then(() => {
+            Taro.showToast({
+              title: '房间信息发布成功!',
+              icon: 'success',
+              duration: 2000
+            })
+            dispatch({
+              type: ROOM_INFO,
+              roomid,
+              host: nickName,
+              treeSpecies: treeCheck,
+              treeImg: TREES[treeIndex].URL,
+              startTime: time,
+              duration: durationCheck,
+              commit,
+              isRoomOwner: true
+            })
+            Taro.navigateTo({ url: "../room/room" })
+          })
+        } else {
+          Taro.showToast({
+            title: "创建失败",
+            icon: "none",
+            duration: 2000
+          })
+          return
+        }
       }
-    }).then(() => {
-
-
-      Taro.showToast({
-        title: '房间信息发布成功!',
-        icon: 'success',
-        duration: 2000
-      })
-      dispatch({
-        type: ROOM_INFO,
-        roomid,
-        host: nickName,
-        treeSpecies: treeCheck,
-        treeImg: TREES[treeIndex].URL,
-        startTime: time,
-        duration: durationCheck,
-        commit,
-        isRoomOwner: true
-      })
-      Taro.navigateTo({ url: "../room/room" })
     })
   }
 
@@ -121,7 +134,7 @@ const Create: React.FC<ModelState> = (props) => {
               <AtListItem title='日期' extraText={date} />
             </AtList>
           </Picker>
-          <Picker value={time} mode='time' onChange={onTimeChange} start={time}>
+          <Picker value={time} mode='time' onChange={onTimeChange}>
             <AtList>
               <AtListItem title='时间' extraText={time} />
             </AtList>

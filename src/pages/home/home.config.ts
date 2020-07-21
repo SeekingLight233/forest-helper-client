@@ -1,3 +1,3 @@
 export default {
-    navigationBarTitleText: '创建预定房间'
+    navigationBarTitleText: 'Forest发车助手'
 }

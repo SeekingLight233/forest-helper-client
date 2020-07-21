@@ -31,7 +31,7 @@ type ModelState = ConnectedProps<typeof connector>
 
 const Room: React.FC<ModelState> = (props) => {
     const { createdRoomid, duration, treeImg, isRoomOwner, member, openid, _openid, roomid, nickName, host, subscribeRoomid, startTime, treeSpecies } = props;
-    const [roomOwner, setRoomOwner] = useState(_openid == openid)
+    const [roomOwner, setRoomOwner] = useState(_openid == openid || isRoomOwner)
     const [subscribe, setSubscribe] = useState(false)
     const [share, setShare] = useState(false)
     const router = useRouter()
@@ -48,7 +48,6 @@ const Room: React.FC<ModelState> = (props) => {
         if (shareid && !router.params.select_room) {
             const sharer = wx.getEnterOptionsSync().query.sharer;
             const info: any = await updateUserState()
-            // 允许分享者通过卡片删除
             if (sharer == info.openid) { // At this time, the openid here is for the visitor
                 setRoomOwner(true)
             }

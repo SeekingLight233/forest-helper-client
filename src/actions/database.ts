@@ -81,8 +81,6 @@ export function updateRoom(roomid: number, member: string[], cancelSubscribe?: b
     Taro.showLoading({
       title: "请稍等"
     })
-    console.log(roomid);
-    console.log(member);
     wx.cloud.callFunction({
       name: 'subscribe',
       data: {

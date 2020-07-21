@@ -4,6 +4,7 @@ import { updateSubscribeState } from './updateState'
 import { updateRoom } from './database'
 import Taro from '@tarojs/taro'
 import { USER_INFO } from '../constants/actionTypes'
+import { SUBSCRIBER_TEMP_ID } from '../constants/common'
 
 const { dispatch } = store
 
@@ -24,10 +25,28 @@ export const handleSubscribe = ({ nickName, host, subscribeRoomid, openid, roomi
             duration: 2000
         })
     } else {
-        updateSubscribeState(openid, nickName, roomid)
-        _setSubscribe(true)
-        member.push(openid);
-        dispatch(updateRoom(roomid, member))
+        Taro.requestSubscribeMessage({
+            tmplIds: [SUBSCRIBER_TEMP_ID],
+            success: function (res) {
+                console.log(res);
+                if (res[SUBSCRIBER_TEMP_ID] === "accept") {
+                    updateSubscribeState(openid, nickName, roomid)
+                    _setSubscribe(true)
+                    member.push(openid);
+                    dispatch(updateRoom(roomid, member))
+                } else {
+                    Taro.showToast({
+                        title: "订阅失败",
+                        icon: "none",
+                        duration: 2000
+                    })
+                    return
+                }
+
+            }
+
+        })
+
     }
 }
 
