@@ -80,7 +80,8 @@ const Create: React.FC<ModelState> = (props) => {
               openid: openid,
               host: nickName,
               member: [],
-              roomid
+              roomid,
+              isSendMessage: 0
             }
           }).then(() => {
             Taro.showToast({
