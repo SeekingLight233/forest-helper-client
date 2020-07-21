@@ -10,8 +10,10 @@ export const saveUserInfo = ({ e, storageOpenid, storageNickName, dispatch, stat
     wx.cloud.callFunction({
         name: 'login',
         success: function (res) {
+            console.log("login success");
+            console.log(res)
             const data = JSON.parse(e.detail.rawData)
-            const { subscribeRoomid, createdRoomid, openid } = res.result.result
+            const { subscribeRoomid, createdRoomid, openid } = res.result
             dispatch({
                 type: USER_INFO,
                 nickName: data.nickName,

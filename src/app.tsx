@@ -1,17 +1,20 @@
 import Nerv, { Component } from 'nervjs'
 import { Provider } from 'nerv-redux'
-
+import Taro from '@tarojs/taro'
 import { store } from './store'
-
+import { set as setGlobalData } from "./store/global_data"
 import './app.scss'
 
 
 class App extends Component {
-  props: any
+  [x: string]: any
   componentDidMount() {
     wx.cloud.init({
       traceUser: true,
     })
+    // 初始化提示信息
+    const hometip = Taro.getStorageSync("hometip")
+    setGlobalData("hometip", `${hometip}`);
   }
 
   componentDidShow() { }

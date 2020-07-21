@@ -1,11 +1,12 @@
-import Nerv, { useEffect } from 'nervjs'
-import { View } from '@tarojs/components'
+import Nerv, { useEffect, useState, useRef } from 'nervjs'
+import { View, Button, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { AtButton, AtAvatar } from 'taro-ui'
+import { AtButton, AtAvatar, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import './home.scss'
 // eslint-disable-next-line import/first
 import { connect, ConnectedProps } from 'nerv-redux'
 import { saveUserInfo } from '../../utils/common'
+import { set as setGlobalData, get as getGlobalData } from "../../store/global_data"
 
 const mapStateToProps = (state) => ({
   openid: state.userInfo.openid,
@@ -21,6 +22,24 @@ const Home: React.FC<ModelState> = (props) => {
   const { openid, nickName, dispatch, state } = props
   const storageOpenid = Taro.getStorageSync('openid')
   const storageNickName = Taro.getStorageSync('nickName')
+  const [tip, setTip] = useState(true)
+
+  useEffect(() => {
+    let hometip = getGlobalData("hometip")
+    if (hometip != "exist") {
+      Taro.showModal({
+        title: 'Tip',
+        showCancel: false,
+        confirmText: "不再提示",
+        content: '本程序的正常使用建立在大家的彼此信任之上。无论你作为预定房间的主人还是房间的订阅者，都希望你能够在接到通知后，准时创建(或进入)房间。祝大家学习愉快:)',
+        success: function (res) {
+          if (res.confirm) {
+            Taro.setStorageSync("hometip", "exist")
+          }
+        }
+      })
+    }
+  }, [])
 
   const handleUserInfo = (e) => {
     Taro.showLoading({
@@ -39,8 +58,13 @@ const Home: React.FC<ModelState> = (props) => {
     Taro.navigateTo({ url: '../create/create' })
   }
 
+  const handleTip = () => {
+    Taro.setStorageSync("hometip", false)
+    setTip(false)
+  }
+
   return (
-    <View className='home'>
+    <View className="home">
       <View className='home-container'>
         <View className='icon-wrap'>
           <AtAvatar className='icon' image='cloud://server-ncazq.7365-server-ncazq-1302589525/img/home.png' circle></AtAvatar>
@@ -56,6 +80,13 @@ const Home: React.FC<ModelState> = (props) => {
           </AtButton>
         </View>
       </View>
+      <AtModal
+        isOpened={false}
+        title='标题'
+        confirmText='确认'
+        onConfirm={handleTip}
+        content=''
+      />
     </View>
   )
 }
