@@ -5,6 +5,81 @@ export const TREES = [
             "cloud://server-ncazq.7365-server-ncazq-1302589525/trees/tree_default.png",
     },
     {
+        NAME: "草莓戚风蛋糕",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/strawberry.jpg",
+    },
+    {
+        NAME: "蓝莓蛋糕",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/blueberry.jpg",
+    },
+    {
+        NAME: "黑森林蛋糕",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/dark_forest.jpg",
+    },
+    {
+        NAME: "柠檬蛋糕",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/lemon_cake.jpg",
+    },
+    {
+        NAME: "抹茶红豆蛋糕",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/matcha.jpg",
+    },
+    {
+        NAME: "提拉米苏",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/tiramisu.jpg",
+    },
+    {
+        NAME: "樱桃起士蛋糕",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/cherry_cheese.jpg",
+    },
+    {
+        NAME: "巧克力草莓蛋糕",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/chocolate_strawberry.jpg",
+    },
+    {
+        NAME: "蛋糕树",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/five_year_tree.jpg",
+    },
+    {
+        NAME: "六周年蛋糕树",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/six_year_tree.jpg",
+    },
+    {
+        NAME: "太空树",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/space_tree.jpg",
+    },
+    {
+        NAME: "独角兽树",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/unicorn_tree.jpg",
+    },
+    {
+        NAME: "橡树",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/oka.jpg",
+    },
+    {
+        NAME: "地球树",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/earth_tree.jpg",
+    },
+    {
+        NAME: "新年竹",
+        URL:
+            "cloud://server-ncazq.7365-server-ncazq-1302589525/vip_trees/new_year_bamboo.jpg",
+    },
+    {
         NAME: "水之心",
         URL:
             "cloud://server-ncazq.7365-server-ncazq-1302589525/trees/water_spirit_4.png",
