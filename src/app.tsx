@@ -7,6 +7,7 @@ import './app.scss'
 
 
 class App extends Component {
+  props: any
   componentDidMount() {
     wx.cloud.init({
       traceUser: true,
