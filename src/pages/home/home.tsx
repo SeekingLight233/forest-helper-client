@@ -27,17 +27,17 @@ const Home: React.FC<ModelState> = (props) => {
   useEffect(() => {
     let hometip = getGlobalData("hometip")
     if (hometip != "exist") {
-      Taro.showModal({
-        title: 'Tip',
-        showCancel: false,
-        confirmText: "不再提示",
-        content: '本程序的正常使用建立在大家的彼此信任之上。无论你作为预定房间的主人还是房间的订阅者，都希望你能够在接到通知后，准时发车(上车)。祝大家种树愉快:)',
-        success: function (res) {
-          if (res.confirm) {
-            Taro.setStorageSync("hometip", "exist")
-          }
-        }
-      })
+      // Taro.showModal({
+      //   title: 'Tip',
+      //   showCancel: false,
+      //   confirmText: "不再提示",
+      //   content: '本程序的正常使用建立在大家的彼此信任之上。无论你作为预定房间的主人还是房间的订阅者，都希望你能够在接到通知后，准时发车(上车)。祝大家种树愉快:)',
+      //   success: function (res) {
+      //     if (res.confirm) {
+      //       Taro.setStorageSync("hometip", "exist")
+      //     }
+      //   }
+      // })
     }
   }, [])
 

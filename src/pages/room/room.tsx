@@ -15,6 +15,7 @@ import { useShareAppMessage } from '@tarojs/taro';
 import Taro, { useRouter } from '@tarojs/taro'
 import { queryRoomById } from '../../actions/database';
 import { set as setGlobalData, get as getGlobalData } from "../../store/global_data"
+import { CLEAR_ROOMS } from '../../constants/actionTypes';
 
 const mapStateToProps = (state) => {
     const { roomid, host, treeSpecies, startTime, duration, commit, treeImg, isRoomOwner, member, _openid } = state.roomInfo;
@@ -30,7 +31,7 @@ type ModelState = ConnectedProps<typeof connector>
 
 
 const Room: React.FC<ModelState> = (props) => {
-    const { createdRoomid, duration, treeImg, isRoomOwner, member, openid, _openid, roomid, nickName, host, subscribeRoomid, startTime, treeSpecies } = props;
+    const { dispatch, createdRoomid, duration, treeImg, isRoomOwner, member, openid, _openid, roomid, nickName, host, subscribeRoomid, startTime, treeSpecies } = props;
     const [roomOwner, setRoomOwner] = useState(_openid == openid || isRoomOwner)
     const [subscribe, setSubscribe] = useState(false)
     const [share, setShare] = useState(false)
@@ -39,8 +40,6 @@ const Room: React.FC<ModelState> = (props) => {
     const _setSubscribe = (state: boolean) => {
         setSubscribe(state)
     }
-
-
 
     useEffect(async () => {
         // 分享进入时的入口参数
@@ -52,16 +51,16 @@ const Room: React.FC<ModelState> = (props) => {
                 setRoomOwner(true)
             }
 
-            if (shareid == info.subscribeRoomid) {
+            if (info.subscribeRoomid.includes(Number(shareid))) {
                 setSubscribe(true)
             }
             queryRoomById(Number(shareid))
         } else {
             // 判断该房间是否为已订阅的状态
-            const isSubscribe = subscribeRoomid === roomid;
-            if (isSubscribe) {
-                updateSubscribeState(openid, nickName, roomid)
-            }
+            const isSubscribe = subscribeRoomid.includes(roomid)
+            // if (isSubscribe) {
+            //     updateSubscribeState(openid, nickName, roomid)
+            // }
             setSubscribe(isSubscribe)
             if (roomid === createdRoomid) {
                 setRoomOwner(true)
@@ -94,6 +93,7 @@ const Room: React.FC<ModelState> = (props) => {
             member,
             _setSubscribe
         })
+        setGlobalData("subscribe", true)
     }
 
     const onSubscribe = () => {
@@ -104,6 +104,7 @@ const Room: React.FC<ModelState> = (props) => {
             _setSubscribe,
             nickName
         })
+        setGlobalData("subscribe", false)
     }
 
     return (

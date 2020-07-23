@@ -12,6 +12,8 @@ import { connect, ConnectedProps } from "nerv-redux";
 import { updateSubscribeState, updateRoomInfoState } from '../../actions/updateState'
 import { handleSubscribe, cancelSubscribe } from '../../actions/controller'
 
+
+
 const mapStateToProps = (state) => ({
   openid: state.userInfo.openid,
   nickName: state.userInfo.nickName,
@@ -44,12 +46,13 @@ const RoomInfo: React.FC<IProps & ModelState> = (props) => {
   }
 
   useEffect(() => {
-    const isSubscribe = subscribeRoomid === roomid
-    if (isSubscribe) {
-      updateSubscribeState(openid, nickName, roomid)
-    }
+    const isSubscribe = subscribeRoomid.includes(roomid)
+    console.log(isSubscribe);
+
+    // if (isSubscribe) {
+    //   updateSubscribeState(openid, nickName, roomid)
+    // }
     setSubscribe(isSubscribe)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 

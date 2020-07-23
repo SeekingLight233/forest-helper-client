@@ -13,6 +13,7 @@ import { RoomState } from "../../reducers/roomInfoReducer";
 import RoomInfo from "../../components/RoomInfo";
 import { getTime, getChineseDate } from "../../utils/date";
 import { CLEAR_ROOMS } from "../../constants/actionTypes";
+import { set as setGlobalData, get as getGlobalData } from "../../store/global_data"
 
 const mapStateToProps = (state) => {
     const { list } = state.getRooms;

@@ -24,6 +24,23 @@ const Notice: React.FC<ModelState> = (props) => {
         setCommit(val)
     }
 
+    const sendNotice = () => {
+        let reg = /\w{7}/
+        let res = commit.match(reg)
+        let room_key = null;
+        try {
+            room_key = res[0]
+        } catch (error) {
+            Taro.showToast({
+                title: '未检测到房间密钥',
+                icon: 'none',
+                duration: 2000
+            })
+            return
+        }
+        //@todo 将room_key发到后端
+    }
+
     return (
         <View className="notice">
             <View className="content-area" style='flex-direction:column;'>
@@ -35,13 +52,13 @@ const Notice: React.FC<ModelState> = (props) => {
                     <AtInput
                         name='commit'
                         type='text'
-                        placeholder='请在此处输入Forest房间密钥'
+                        placeholder='在此粘贴分享链接或输入房间密钥'
                         value={commit}
                         onChange={onCommitChange}
                     />
                 </View>
                 <View className="btn-area">
-                    <AtButton type="primary">发送通知！</AtButton>
+                    <AtButton type="primary" onClick={sendNotice}>发送通知！</AtButton>
                 </View>
             </View>
 

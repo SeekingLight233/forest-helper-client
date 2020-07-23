@@ -4,7 +4,7 @@ export interface UserState {
   openid: string,
   nickName: string,
   deleteRoomid: number, //房间信息中useEffect的依赖，实现路由返回刷新
-  subscribeRoomid: number,
+  subscribeRoomid: Array<number>,
   createdRoomid: number
 }
 
@@ -12,7 +12,7 @@ const INITIAL_STATE: UserState = {
   openid: "openid",
   nickName: "nickName",
   deleteRoomid: 0,
-  subscribeRoomid: 0,
+  subscribeRoomid: [],
   createdRoomid: 0
 }
 
@@ -24,7 +24,7 @@ export default function userInfo(state = INITIAL_STATE, action): UserState {
         openid: action.openid,
         nickName: action.nickName,
         deleteRoomid: action.deleteRoomid,
-        subscribeRoomid: action.subscribeRoomid,
+        subscribeRoomid: [...action.subscribeRoomid],
         createdRoomid: action.createdRoomid
       }
     default:

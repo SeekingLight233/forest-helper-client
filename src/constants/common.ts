@@ -11,3 +11,5 @@ export const MAX_PAGE_LENGTH = 20
 export const SUBSCRIBER_TEMP_ID = "zt22uNQ1gZ9CGMCTH4j9XZ7Z5T9hn68LdWpnhqbIAk8"
 
 export const HOST_TEMP_ID = "2CXWe8Ac2JaCbc9gNLEkfR-YnWEIUQM2JvuguMoZO9E"
+
+export const CANCEL_TEMP_ID = "ggm6JU9kJXBRdewFuprUVL7gnVqFY2AWLcafhHVSEE4"

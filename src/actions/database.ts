@@ -78,6 +78,8 @@ export function queryRoomById(roomid: number) {
  */
 export function updateRoom(roomid: number, member: string[], cancelSubscribe?: boolean): any {
   return (dispatch, getState) => {
+    let subscribeRoomid = getState().userInfo.subscribeRoomid
+    console.log(subscribeRoomid);
     Taro.showLoading({
       title: "请稍等"
     })
@@ -86,7 +88,8 @@ export function updateRoom(roomid: number, member: string[], cancelSubscribe?: b
       data: {
         roomid,
         member,
-        cancelSubscribe
+        cancelSubscribe,
+        subscribeRoomid
       }
     }).then(() => {
       console.log("subscribe ok!!!");
@@ -104,39 +107,42 @@ export function updateRoom(roomid: number, member: string[], cancelSubscribe?: b
           title: "取消订阅",
           icon: "none"
         })
-        dispatch({
-          type: USER_INFO,
-          ...userInfoState,
-          subscribeRoomid: 0
-        })
+        // dispatch({
+        //   type: USER_INFO,
+        //   ...userInfoState,
+        //   subscribeRoomid: 0
+        // })
       }
     })
   }
 }
-
+//＠todo 这个逻辑需要挪到服务端
 /**
  * @description 删除房间
  * @param roomid  要删除的房间号
  */
 export const deleteRoom = (roomid: number) => {
-  db.collection('rooms').where({
-    roomid
-  }).remove({
-    success: function (res) {
-      const rooms = store.getState().getRooms;
-      Taro.hideLoading()
-      const list = rooms.list.filter(item => item.roomid !== roomid)
-      Taro.navigateBack({
-        complete: () => {
-          store.dispatch({
-            type: GET_ROOMS,
-            ...rooms,
-            list
-          })
-        }
-      })
+  wx.cloud.callFunction({
+    name: 'deleteRoom',
+    data: {
+      roomid,
     }
+  }).then(() => {
+    const rooms = store.getState().getRooms;
+    Taro.hideLoading()
+    const list = rooms.list.filter(item => item.roomid !== roomid)
+    Taro.navigateBack({
+      complete: () => {
+        store.dispatch({
+          type: GET_ROOMS,
+          ...rooms,
+          list
+        })
+      }
+    })
   })
 }
+
+
 
 
