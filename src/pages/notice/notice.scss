@@ -21,6 +21,12 @@
             .at-input{
                 margin-left: 2vw;
             }
+            text[selectable]{
+                font-size: 90px;
+                display: inline-block;
+                margin-left: 59px;
+                transform: translateY(-40px);
+            }
         }
         .btn-area{
             width: 70vw;
