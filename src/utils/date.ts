@@ -44,6 +44,13 @@ export const resolveDateToZh = (date: string) => {
     return `${dateArr[1]}月${dateArr[2]}日`
 }
 
+export const calDurationToTime = (duration: string) => {
+    let minutes = Number(duration.match(/\d/g)?.join(""));
+    const now = Date.now();
+    const time = new Date(now + minutes * 60000);
+    return getTime(time)
+}
+
 export const generateRoomID = () => {
     let num = Math.random();
     return Math.floor(num * 100000000)

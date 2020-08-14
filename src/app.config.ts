@@ -4,7 +4,8 @@ export default {
     "pages/create/create",
     "pages/room/room",
     "pages/selectRoom/selectRoom",
-    "pages/notice/notice"
+    "pages/notice/notice",
+    "pages/share/share",
   ],
   window: {
     backgroundTextStyle: 'dark',

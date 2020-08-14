@@ -26,6 +26,29 @@ export const saveUserInfo = ({ e, storageOpenid, storageNickName, dispatch, stat
     })
 }
 
+/**
+ * @description 自动检测链接密钥
+ */
+export const filterRoomKey = (commit) => {
+    let room_key = null
+    if (commit.length > 8) {
+        let reg = /(?<=token=).* /
+        let res = commit.match(reg)
+        try {
+            room_key = res[0].trim()
+        } catch (error) {
+            Taro.showToast({
+                title: '额，好像没有检测到房间密钥。。',
+                icon: 'none',
+                duration: 2000,
+            })
+            return
+        }
+    } else {
+        room_key = commit
+    }
+    return room_key
+}
 
 
 

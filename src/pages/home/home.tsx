@@ -6,7 +6,7 @@ import './home.scss'
 // eslint-disable-next-line import/first
 import { connect, ConnectedProps } from 'nerv-redux'
 import { saveUserInfo } from '../../utils/common'
-import { set as setGlobalData, get as getGlobalData } from "../../store/global_data"
+import { set as setGlobalData, get as getGlobalData } from '../../store/global_data'
 
 const mapStateToProps = (state) => ({
   openid: state.userInfo.openid,
@@ -22,22 +22,21 @@ const Home: React.FC<ModelState> = (props) => {
   const { openid, nickName, dispatch, state } = props
   const storageOpenid = Taro.getStorageSync('openid')
   const storageNickName = Taro.getStorageSync('nickName')
-  const [tip, setTip] = useState(true)
 
   useEffect(() => {
-    let hometip = getGlobalData("hometip")
-    if (hometip != "exist") {
-      // Taro.showModal({
-      //   title: 'Tip',
-      //   showCancel: false,
-      //   confirmText: "不再提示",
-      //   content: '本程序的正常使用建立在大家的彼此信任之上。无论你作为预定房间的主人还是房间的订阅者，都希望你能够在接到通知后，准时发车(上车)。祝大家种树愉快:)',
-      //   success: function (res) {
-      //     if (res.confirm) {
-      //       Taro.setStorageSync("hometip", "exist")
-      //     }
-      //   }
-      // })
+    let hometip = Taro.getStorageSync('hometip')
+    if (hometip != 'exist') {
+      Taro.showModal({
+        title: '公告栏~~',
+        showCancel: false,
+        confirmText: '不再提示',
+        content: '小程序刚上线难免会有bug，如果有问题欢迎在即刻@SeekingLight，祝大家种树愉快(≧ω≦)/',
+        success: function (res) {
+          if (res.confirm) {
+            Taro.setStorageSync('hometip', 'exist')
+          }
+        },
+      })
     }
   }, [])
 
@@ -59,34 +58,36 @@ const Home: React.FC<ModelState> = (props) => {
   }
 
   const handleTip = () => {
-    Taro.setStorageSync("hometip", false)
-    setTip(false)
+    Taro.setStorageSync('hometip', false)
+  }
+
+  const onShareRoom = () => {
+    Taro.navigateTo({ url: '../share/share' })
   }
 
   return (
     <View className="home">
-      <View className='home-container'>
-        <View className='icon-wrap'>
-          <AtAvatar className='icon' image='cloud://server-ncazq.7365-server-ncazq-1302589525/img/home.png' circle></AtAvatar>
+      <View className="home-container">
+        <View className="icon-wrap">
+          <AtAvatar className="icon" image="cloud://main-xst0w.6d61-main-xst0w-1302868954/trees/star_tree_4.png" circle></AtAvatar>
         </View>
-        <View className='select-wrap'>
-          <AtButton className='select-button' onGetUserInfo={onSelectRoom} openType='getUserInfo' type='primary' size='small' circle>
-            选择房间
+        <View className="select-wrap">
+          <AtButton className="select-button" onGetUserInfo={onSelectRoom} openType="getUserInfo" type="primary" size="small" circle>
+            房间广场
           </AtButton>
         </View>
-        <View className='create-wrap'>
-          <AtButton className='create-button' onGetUserInfo={onCreateRoom} openType='getUserInfo' type='primary' size='small' circle>
+        <View className="create-wrap">
+          <AtButton className="create-button" onGetUserInfo={onCreateRoom} openType="getUserInfo" type="primary" size="small" circle>
             创建预定房间
           </AtButton>
         </View>
+        <View className="create-wrap">
+          <AtButton className="create-button" onGetUserInfo={onShareRoom} openType="getUserInfo" type="primary" size="small" circle>
+            分享即时房间
+          </AtButton>
+        </View>
       </View>
-      <AtModal
-        isOpened={false}
-        title='标题'
-        confirmText='确认'
-        onConfirm={handleTip}
-        content=''
-      />
+      <AtModal isOpened={false} title="标题" confirmText="确认" onConfirm={handleTip} content="" />
     </View>
   )
 }
