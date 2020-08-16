@@ -43,7 +43,7 @@ const Create: React.FC<ModelState> = (props) => {
         title: 'Tip',
         showCancel: false,
         confirmText: '不再提示',
-        content: '在这个页面里，你可以创建一个“预定”的房间。不过记得要准时发车哦～',
+        content: '在这个页面里，你可以创建一个“预定”的房间。建议等待时间超过30分钟以上再使用此功能',
         success: function (res) {
           if (res.confirm) {
             console.log('set ok!')
