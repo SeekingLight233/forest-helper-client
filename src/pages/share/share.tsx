@@ -55,7 +55,9 @@ const Create: React.FC<ModelState> = (props) => {
   const onCommitChange = (val) => {
     setCommit(val)
   }
-
+  /**
+   * @todo 分享即时房间到房间广场
+   */
   const submit = () => {
     console.log(durationCheck)
     console.log(waitDuration)

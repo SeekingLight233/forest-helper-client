@@ -1,11 +1,13 @@
 import Nerv, { useEffect, useState, useRef } from 'nervjs'
 import { View, Button, Text, Icon } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { AtButton, AtInput, AtAvatar } from 'taro-ui'
 import './notice.scss'
 // eslint-disable-next-line import/first
 import { connect, ConnectedProps } from 'nerv-redux'
 import { filterRoomKey } from '../../utils/common'
+
+let log = wx.getRealtimeLogManager ? wx.getRealtimeLogManager() : null
 
 const mapStateToProps = (state) => ({
   openid: state.userInfo.openid,
@@ -28,10 +30,16 @@ const Notice: React.FC<ModelState> = (props) => {
     const key = wx.getEnterOptionsSync().query.key
     setUser(key ? true : false)
     setKey(key ? key : '')
+    log.info(`图片地址为：${img}, 房间密钥为：${key}`)
   }, [])
   const onCommitChange = (val) => {
     setCommit(val)
   }
+
+  useDidShow(() => {
+    console.log('--------页面渲染---------')
+    console.log(`图片地址为：${img}`)
+  })
 
   const sendNotice = () => {
     let room_key = filterRoomKey(commit)
