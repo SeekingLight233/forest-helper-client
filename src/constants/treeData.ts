@@ -1,5 +1,10 @@
 export const TREES = [
   {
+    NAME: "情人树",
+    URL:
+      "cloud://main-xst0w.6d61-main-xst0w-1302868954/vip_trees/lover_tree.jpg",
+  },
+  {
     NAME: "圣代冰淇淋",
     URL:
       "cloud://main-xst0w.6d61-main-xst0w-1302868954/vip_trees/sundae.jpg",

@@ -61,7 +61,7 @@ const Create: React.FC<ModelState> = (props) => {
     console.log(waitDuration)
     console.log(TREES[treeIndex].URL)
     console.log(TREES[treeIndex].NAME)
-    console.log(filterRoomKey(commit))
+    console.log(filterRoomKey(commit).length)
   }
 
   const reset = () => {
@@ -91,7 +91,7 @@ const Create: React.FC<ModelState> = (props) => {
         </View>
         <View className="picker">
           <View className="commit">
-            <AtInput name="commit" title="房间密钥" type="text" placeholder="输入房间密钥或粘贴分享链接" value={commit} onChange={onCommitChange} />
+            <AtInput name="commit" title="房间密钥" type="text" placeholder="在此粘贴房间链接或手动输入密钥" value={commit} onChange={onCommitChange} />
           </View>
           <Picker value={durationCheck} range={DURATIONS} mode="selector" onChange={onDurationChange}>
             <AtList>

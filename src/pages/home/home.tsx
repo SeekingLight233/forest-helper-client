@@ -82,7 +82,7 @@ const Home: React.FC<ModelState> = (props) => {
           </AtButton>
         </View>
         <View className="create-wrap">
-          <AtButton className="create-button" onGetUserInfo={onShareRoom} openType="getUserInfo" type="primary" size="small" circle>
+          <AtButton className="create-button" onClick={onShareRoom} type="primary" size="small" circle>
             分享即时房间
           </AtButton>
         </View>
