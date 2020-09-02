@@ -31,14 +31,17 @@ export const saveUserInfo = ({ e, storageOpenid, storageNickName, dispatch, stat
  */
 export const filterRoomKey = (commit: string) => {
     let room_key = ""
+
     if (commit.length > 8) {
         const start = commit.indexOf('token=');
         const tmp = commit.slice(start + 6);
         let res = tmp.slice(0, -2);
         room_key = res;
+
     } else {
         room_key = commit
     }
+
     return room_key
 }
 

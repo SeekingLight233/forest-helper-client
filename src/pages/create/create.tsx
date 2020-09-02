@@ -7,7 +7,7 @@ import Nerv, { useState, useMemo, useShareAppMessage, useRef, useEffect } from '
 import { View, Picker, Text } from '@tarojs/components'
 import { AtButton, AtInput, AtList, AtListItem } from 'taro-ui'
 import { DURATIONS, WAIT_DURATIONS, HOST_TEMP_ID } from '../../constants/common'
-import { TREES } from '../../constants/treeData'
+import { TREEDATA as TREES } from '../../constants/treeData'
 import './create.scss'
 import { getDate, getTime, resolveTime, generateRoomID, resolveDateToZh } from '../../utils/date'
 
