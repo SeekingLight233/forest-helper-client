@@ -8,14 +8,17 @@ import { View, Picker, Text } from '@tarojs/components'
 import { useShareAppMessage } from '@tarojs/taro'
 import { AtButton, AtInput, AtList, AtListItem } from 'taro-ui'
 import { DURATIONS, WAIT_DURATIONS, HOST_TEMP_ID } from '../../constants/common'
-import { TREES } from '../../constants/treeData'
+import { TREEDATA } from '../../constants/treeData'
 import './share.scss'
 import { getDate, getTime, resolveTime, generateRoomID, resolveDateToZh, calDurationToTime } from '../../utils/date'
 
 // eslint-disable-next-line import/first
 import { connect, ConnectedProps } from 'nerv-redux'
 import { USER_INFO, ROOM_INFO } from '../../constants/actionTypes'
-import { filterRoomKey } from '../../utils/common'
+import { filterRoomKey, hoistTree } from '../../utils/common'
+
+const Storege_trees = Taro.getStorageSync('TREES')
+const TREES = Storege_trees || TREEDATA
 
 const mapStateToProps = (state) => ({
   openid: state.userInfo.openid,
@@ -56,12 +59,16 @@ const Create: React.FC<ModelState> = (props) => {
     setCommit(val)
   }
 
+  /**
+   * @description 提交以后执行的动作
+   */
   const submit = () => {
-    console.log(durationCheck)
-    console.log(waitDuration)
-    console.log(TREES[treeIndex].URL)
-    console.log(TREES[treeIndex].NAME)
-    console.log(filterRoomKey(commit).length)
+    // console.log(durationCheck)
+    // console.log(waitDuration)
+    // console.log(TREES[treeIndex].URL)
+    // console.log(TREES[treeIndex].NAME)
+    // console.log(filterRoomKey(commit).length)
+    hoistTree(TREES, treeIndex)
   }
 
   const reset = () => {

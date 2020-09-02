@@ -1,4 +1,4 @@
-export const TREES = [
+export const TREEDATA = [
   {
     NAME: "情人树",
     URL:
@@ -55,7 +55,7 @@ export const TREES = [
       "cloud://main-xst0w.6d61-main-xst0w-1302868954/vip_trees/chocolate_strawberry.jpg",
   },
   {
-    NAME: "蛋糕树",
+    NAME: "五周年蛋糕树",
     URL:
       "cloud://main-xst0w.6d61-main-xst0w-1302868954/vip_trees/five_year_tree.jpg",
   },
@@ -127,6 +127,16 @@ export const TREES = [
     NAME: "仙树",
     URL:
       "cloud://main-xst0w.6d61-main-xst0w-1302868954/trees/celestial_tree_4.png",
+  },
+  {
+    NAME: "樱花",
+    URL:
+      "cloud://main-xst0w.6d61-main-xst0w-1302868954/new_trees/cherry_flower.jpg",
+  },
+  {
+    NAME: "玫瑰",
+    URL:
+      "cloud://main-xst0w.6d61-main-xst0w-1302868954/new_trees/rose.jpg",
   },
   {
     NAME: "熊童子",
@@ -281,7 +291,7 @@ export const TREES = [
   {
     NAME: "樱花",
     URL:
-      "cloud://main-xst0w.6d61-main-xst0w-1302868954/trees/celestial_tree_4.png",
+      "cloud://main-xst0w.6d61-main-xst0w-1302868954/trees/cherry_blossom_4.png",
   },
   {
     NAME: "章鱼",

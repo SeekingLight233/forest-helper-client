@@ -27,7 +27,7 @@ const Home: React.FC<ModelState> = (props) => {
     let hometip = Taro.getStorageSync('hometip')
     if (hometip != 'exist') {
       Taro.showModal({
-        title: '公告栏~~',
+        title: '公告栏',
         showCancel: false,
         confirmText: '不再提示',
         content: '小程序刚上线难免会有bug，如果有问题欢迎在即刻@SeekingLight，祝大家种树愉快(≧ω≦)/',

@@ -27,7 +27,7 @@ export const saveUserInfo = ({ e, storageOpenid, storageNickName, dispatch, stat
 }
 
 /**
- * @description 自动检测链接密钥
+ * @description 检测链接密钥
  */
 export const filterRoomKey = (commit: string) => {
     let room_key = ""
@@ -39,9 +39,17 @@ export const filterRoomKey = (commit: string) => {
     } else {
         room_key = commit
     }
-
     return room_key
 }
 
+/**
+ * @description 改变树种列表
+ */
+
+export const hoistTree = (TREES, treeIndex: number) => {
+    let tmp = TREES.splice(treeIndex, 1)
+    TREES.unshift(...tmp)
+    Taro.setStorageSync('TREES', TREES)
+}
 
 
