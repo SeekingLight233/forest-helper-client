@@ -36,8 +36,12 @@ export const filterRoomKey = (commit: string) => {
         const start = commit.indexOf('token=');
         if (start > 0) {
             const tmp = commit.slice(start + 6);
-            let res = tmp.slice(0, -2);
-            room_key = res;
+            if (tmp.length === 6 || tmp.length === 7) {
+                room_key = tmp
+            } else {
+                let res = tmp.slice(0, -2);
+                room_key = res;
+            }
             Taro.showToast({
                 title: '检测到密钥',
                 duration: 1000

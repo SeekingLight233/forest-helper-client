@@ -18,7 +18,7 @@ import { USER_INFO, ROOM_INFO } from '../../constants/actionTypes'
 import { filterRoomKey, hoistTree } from '../../utils/common'
 
 const Storege_trees = Taro.getStorageSync('TREES')
-const TREES = Storege_trees || TREEDATA
+let TREES = Storege_trees || TREEDATA
 
 const mapStateToProps = (state) => ({
   openid: state.userInfo.openid,
@@ -30,7 +30,8 @@ const connector = connect(mapStateToProps)
 type ModelState = ConnectedProps<typeof connector>
 
 const Create: React.FC<ModelState> = (props) => {
-  const trees = useMemo(() => TREES.map((item) => item.NAME), [])
+  const _trees = useMemo(() => TREES.map((item) => item.NAME), [])
+  const [trees, setTrees] = useState(_trees)
   const [date, setDate] = useState(getDate())
   const [time, setTime] = useState(getTime(new Date()))
   const [durationCheck, setDurationCheck] = useState('60分钟')
@@ -64,6 +65,9 @@ const Create: React.FC<ModelState> = (props) => {
     }
   }
 
+  useEffect(() => {
+    TREES = Taro.getStorageSync('TREES')
+  }, [treeCheck])
   /**
    * @description 提交以后执行的动作
 
@@ -75,6 +79,8 @@ const Create: React.FC<ModelState> = (props) => {
     // console.log(TREES[treeIndex].NAME)
     // console.log(filterRoomKey(commit).length)
     hoistTree(TREES, treeIndex)
+
+    setTrees(TREES.map((item) => item.NAME))
   }
 
   const reset = () => {
