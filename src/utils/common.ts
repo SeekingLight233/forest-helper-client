@@ -32,11 +32,17 @@ export const saveUserInfo = ({ e, storageOpenid, storageNickName, dispatch, stat
 export const filterRoomKey = (commit: string) => {
     let room_key = ""
 
-    if (commit.length > 8) {
+    if (commit.length > 10) {
         const start = commit.indexOf('token=');
-        const tmp = commit.slice(start + 6);
-        let res = tmp.slice(0, -2);
-        room_key = res;
+        if (start > 0) {
+            const tmp = commit.slice(start + 6);
+            let res = tmp.slice(0, -2);
+            room_key = res;
+            Taro.showToast({
+                title: '检测到密钥',
+                duration: 1000
+            })
+        }
 
     } else {
         room_key = commit

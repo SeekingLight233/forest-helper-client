@@ -56,7 +56,12 @@ const Create: React.FC<ModelState> = (props) => {
     setTreeCheck(trees[e.detail.value])
   }
   const onCommitChange = (val) => {
-    setCommit(val)
+    if (val.length > 10) {
+      const key = filterRoomKey(val)
+      setCommit(key)
+    } else {
+      setCommit(val)
+    }
   }
 
   /**
@@ -82,7 +87,7 @@ const Create: React.FC<ModelState> = (props) => {
 
   useShareAppMessage((res) => {
     const img = TREES[treeIndex].URL
-    const key = filterRoomKey(commit)
+    const key = commit
     return {
       title: `我将在 ${calDurationToTime(waitDuration)} 种下一颗"${TREES[treeIndex].NAME}",时长${durationCheck},点击复制密钥`,
       path: `/pages/notice/notice?key=${key}&img=${img}`,
