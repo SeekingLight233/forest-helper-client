@@ -2,7 +2,7 @@
  * @description  创建房间页面
  */
 /* eslint-disable no-shadow */
-import Taro, { login } from '@tarojs/taro'
+import Taro, { login, useDidShow } from '@tarojs/taro'
 import Nerv, { useState, useMemo, useRef, useEffect } from 'nervjs'
 import { View, Picker, Text } from '@tarojs/components'
 import { useShareAppMessage } from '@tarojs/taro'
@@ -66,8 +66,9 @@ const Create: React.FC<ModelState> = (props) => {
   }
 
   useEffect(() => {
-    TREES = Taro.getStorageSync('TREES')
+    TREES = Taro.getStorageSync('TREES') || TREEDATA
   }, [treeCheck])
+
   /**
    * @description 提交以后执行的动作
 
@@ -79,8 +80,8 @@ const Create: React.FC<ModelState> = (props) => {
     // console.log(TREES[treeIndex].NAME)
     // console.log(filterRoomKey(commit).length)
     hoistTree(TREES, treeIndex)
-
     setTrees(TREES.map((item) => item.NAME))
+    setTreeIndex(0)
   }
 
   const reset = () => {
