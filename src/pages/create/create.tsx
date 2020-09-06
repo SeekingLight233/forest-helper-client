@@ -83,41 +83,60 @@ const Create: React.FC<ModelState> = (props) => {
       tmplIds: [HOST_TEMP_ID],
       success: function (res) {
         if (res[HOST_TEMP_ID] === 'accept') {
-          Taro.showLoading({
-            title: '正在加载...',
-          })
-          const db = wx.cloud.database()
-          db.collection('rooms')
-            .add({
+          // 敏感词过滤
+          wx.cloud
+            .callFunction({
+              name: 'checkText',
               data: {
-                startTime: resolveTime(date, time),
-                date: resolveDateToZh(date),
-                waitDuration: waitDuration,
-                duration: durationCheck,
-                treeImg: TREES[treeIndex].URL,
-                treeSpecies: TREES[treeIndex].NAME,
-                commit: commit,
-                openid: openid,
-                host: nickName,
-                member: [],
-                roomid,
-                isSendMessage: 0,
+                text: commit,
               },
             })
-            .then(() => {
-              Taro.hideLoading()
-              dispatch({
-                type: ROOM_INFO,
-                roomid,
-                host: nickName,
-                treeSpecies: treeCheck,
-                treeImg: TREES[treeIndex].URL,
-                startTime: time,
-                duration: durationCheck,
-                commit,
-                isRoomOwner: true,
-              })
-              Taro.navigateTo({ url: '../room/room' })
+            .then((res) => {
+              if (res.result === 1) {
+                Taro.showLoading({
+                  title: '正在加载...',
+                })
+                const db = wx.cloud.database()
+                db.collection('rooms')
+                  .add({
+                    data: {
+                      startTime: resolveTime(date, time),
+                      date: resolveDateToZh(date),
+                      waitDuration: waitDuration,
+                      duration: durationCheck,
+                      treeImg: TREES[treeIndex].URL,
+                      treeSpecies: TREES[treeIndex].NAME,
+                      commit: commit,
+                      openid: openid,
+                      host: nickName,
+                      member: [],
+                      roomid,
+                      isSendMessage: 0,
+                    },
+                  })
+                  .then(() => {
+                    Taro.hideLoading()
+                    dispatch({
+                      type: ROOM_INFO,
+                      roomid,
+                      host: nickName,
+                      treeSpecies: treeCheck,
+                      treeImg: TREES[treeIndex].URL,
+                      startTime: time,
+                      duration: durationCheck,
+                      commit,
+                      isRoomOwner: true,
+                    })
+                    Taro.navigateTo({ url: '../room/room' })
+                  })
+              } else {
+                Taro.showToast({
+                  title: '非法输入！',
+                  icon: 'none',
+                  duration: 2000,
+                })
+                return
+              }
             })
         } else {
           Taro.showToast({
